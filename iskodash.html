@@ -8,9 +8,440 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
 <style>
+  /* ── DASHBOARD PAGE ── */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 72px);
+  background: #F5F0E8;
+}
+
+.pv-rating { font-size: .4rem; color: #F59E0B; margin-top: 1px; }
+
+.db-sidebar {
+  background: #6B1013;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  position: sticky;
+  top: 72px;
+  height: calc(100vh - 72px);
+  overflow-y: auto;
+}
+.track-eta-badge { background: rgba(255,255,255,0.18); border-radius: 8px; padding: 4px 8px; text-align: right; flex-shrink: 0; }
+.track-eta-num { font-family: 'Unbounded', sans-serif; font-size: .7rem; font-weight: 800; color: #fff; }
+.track-eta-label { font-size: .45rem; color: rgba(255,255,255,0.7); display: block; }
+.track-arriving { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.20); border-radius: 8px; padding: 4px 8px; font-size: .52rem; color: #fff; backdrop-filter: blur(8px); }
+
+.db-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  margin-bottom: .75rem;
+}
+.db-sidebar-logo .logo-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--grad-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Unbounded', sans-serif;
+  font-size: .6rem;
+  font-weight: 800;
+  color: #fff;
+}
+.db-sidebar-logo span {
+  font-family: 'Unbounded', sans-serif;
+  font-size: .95rem;
+  font-weight: 700;
+  color: #fff;
+}
+.db-sidebar-logo span em {
+  color: #FFB3B5;
+  font-style: normal;
+}
+.db-nav-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .72rem 1.5rem;
+  font-size: .84rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  transition: all .2s;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+}
+.db-nav-item:hover {
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.90);
+}
+.db-nav-item.active {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-weight: 700;
+  border-left-color: #FFB3B5;
+}
+.db-nav-item .db-nav-icon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+}
+.db-main {
+  padding: 2rem 2.5rem;
+  background: #F5F0E8;
+  overflow-y: auto;
+}
+.db-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.db-topbar h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.5px;
+}
+.db-topbar p {
+  font-size: .82rem;
+  color: var(--muted);
+  margin-top: .15rem;
+}
+.db-notif-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid rgba(255,90,95,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255,90,95,0.08);
+}
+.db-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.db-stat-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.4rem 1.5rem;
+  border: 1.5px solid rgba(255,90,95,0.10);
+  box-shadow: 0 2px 12px rgba(255,90,95,0.07);
+  transition: all .3s;
+}
+.db-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(255,90,95,0.13);
+  border-color: rgba(255,90,95,0.28);
+}
+.db-stat-card .dsc-label {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: .5rem;
+}
+.db-stat-card .dsc-value {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.db-stat-card .dsc-sub {
+  font-size: .72rem;
+  color: var(--muted2);
+  font-weight: 300;
+}
+.db-stat-card .dsc-sub.green { color: #16a34a; font-weight: 600; }
+.db-stat-card .dsc-sub.red   { color: var(--r2); font-weight: 600; }
+.db-content-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.2rem;
+}
+.db-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.5rem;
+  border: 1.5px solid rgba(255,90,95,0.10);
+  box-shadow: 0 2px 12px rgba(255,90,95,0.06);
+}
+.db-card-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: .78rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.3px;
+  margin-bottom: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.db-card-title a {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--r2);
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Meetup banner */
+.db-meetup-banner {
+  background: linear-gradient(135deg, #7A1518, #D4262C);
+  border-radius: 12px;
+  padding: 1.2rem 1.3rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.db-meetup-banner::after {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+.db-meetup-date {
+  font-family: 'Unbounded', sans-serif;
+  font-size: .95rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: .2rem;
+}
+.db-meetup-loc {
+  font-size: .78rem;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: .75rem;
+}
+.db-meetup-tags {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: .9rem;
+}
+.db-meetup-tag {
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50px;
+  padding: .22rem .75rem;
+  font-size: .65rem;
+  color: rgba(255,255,255,0.85);
+}
+.db-meetup-avatars {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.db-av {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--grad-red);
+  border: 2px solid rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Unbounded', sans-serif;
+  font-size: .48rem;
+  font-weight: 800;
+  color: #fff;
+  margin-left: -8px;
+}
+.db-av:first-child { margin-left: 0; }
+.db-av-label {
+  font-size: .68rem;
+  color: rgba(255,255,255,0.75);
+  margin-left: .4rem;
+}
+.db-meetup-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 8px;
+  padding: .5rem 1rem;
+  font-size: .72rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all .2s;
+  margin-top: .9rem;
+}
+.db-meetup-btn:hover { background: rgba(255,255,255,0.28); }
+/* Chat messages */
+.db-chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.db-chat-msg {
+  display: flex;
+  gap: .7rem;
+  align-items: flex-start;
+}
+.db-chat-av {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #A81E23, #F03E44);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .56rem;
+  font-weight: 800;
+  color: #fff;
+  font-family: 'Unbounded', sans-serif;
+  flex-shrink: 0;
+}
+.db-chat-bubble {
+  background: #F5F0E8;
+  border-radius: 0 10px 10px 10px;
+  padding: .55rem .85rem;
+  flex: 1;
+}
+.db-chat-name {
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: .15rem;
+}
+.db-chat-text {
+  font-size: .75rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.db-chat-time {
+  font-size: .6rem;
+  color: var(--muted2);
+  flex-shrink: 0;
+  margin-top: .2rem;
+}
+.db-chat-input {
+  display: flex;
+  gap: .6rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+.db-chat-input input {
+  flex: 1;
+  padding: .6rem .9rem;
+  border: 1.5px solid rgba(255,90,95,0.15);
+  border-radius: 50px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .8rem;
+  color: var(--ink);
+  background: #F5F0E8;
+  outline: none;
+}
+.db-chat-input input:focus { border-color: var(--r2); }
+.db-chat-send {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--grad-red);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: .8rem;
+  color: #fff;
+  box-shadow: 0 4px 12px var(--r-glow);
+}
+/* Recent orders list */
+.db-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+}
+.db-order-item {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  padding: .7rem;
+  border-radius: 10px;
+  background: #F5F0E8;
+  transition: background .2s;
+}
+.db-order-item:hover { background: rgba(255,90,95,0.06); }
+.db-order-emoji {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,90,95,0.12);
+}
+.db-order-name {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.db-order-sub {
+  font-size: .7rem;
+  color: var(--muted2);
+  font-weight: 300;
+}
+.db-order-price {
+  margin-left: auto;
+  font-family: 'Unbounded', sans-serif;
+  font-size: .8rem;
+  font-weight: 800;
+  color: var(--r2);
+  white-space: nowrap;
+}
+.db-order-time {
+  font-size: .65rem;
+  color: var(--muted2);
+  white-space: nowrap;
+}
+
+@media(max-width:900px){
+  .dashboard-layout{grid-template-columns:1fr}
+  .db-sidebar{position:static;height:auto;flex-direction:row;overflow-x:auto;padding:1rem;gap:.3rem}
+  .db-sidebar-logo{display:none}
+  .db-nav-item{border-left:none;border-bottom:3px solid transparent;padding:.5rem .9rem;white-space:nowrap}
+  .db-nav-item.active{border-bottom-color:#FFB3B5;border-left:none}
+  .db-stats-row{grid-template-columns:repeat(2,1fr)}
+  .db-content-grid{grid-template-columns:1fr}
+  .db-main{padding:1.2rem}
+}
+@media(max-width:560px){
+  .db-stats-row{grid-template-columns:1fr 1fr}
+}
+
 :root {
  --r:  #FF5A5F; --r2: #F03E44; --r3: #D4262C; --r4: #A81E23;
 --r-glow: rgba(255,90,95,0.30); --r-soft: rgba(255,90,95,0.08); --r-soft2: rgba(255,90,95,0.15);
+
+--gold: #F5A623;
+--gold2: #E8950F;
 
 --b:  #F03E44; --b2: #D4262C; --b3: #A81E23; --b4: #7A1518;
 --b-soft: rgba(255,90,95,0.08); --b-soft2: rgba(255,90,95,0.15);
@@ -40,22 +471,24 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;cursor:none}
-
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;cursor:default}
 /* ── CURSOR ── */
-.cursor{position:fixed;width:10px;height:10px;background:var(--r);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:multiply}
-.cursor-ring{position:fixed;width:38px;height:38px;border:1.5px solid var(--b);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .12s ease,width .2s,height .2s,opacity .2s;opacity:.5}
-body:has(a:hover) .cursor,body:has(button:hover) .cursor{width:18px;height:18px;background:var(--sky)}
-body:has(a:hover) .cursor-ring,body:has(button:hover) .cursor-ring{width:54px;height:54px;opacity:.25}
-
+.cursor{display:none}
+.cursor-ring{display:none}
+*{cursor:default}
+a,button,.vendor-card,.svc-card,.aud-card,.feed-act,.store-badge,.ps-vendor-card,.nav-cta,.btn-red,.btn-blue,.btn-outline,.btn-white,.btn-w-solid,.btn-hero-primary,.btn-hero-ghost,.hamburger,.soc-btn,.footer-col a,.mobile-menu a,.ps-tab,.track-back,.track-msg-btn,.ps-notif-btn{cursor:pointer} 
 /* ── PAGE TRANSITIONS ── */
 .page{display:none}
 .page.active{display:block;animation:pageFade .45s cubic-bezier(.22,1,.36,1) both}
 @keyframes pageFade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.5rem,5vw,4rem);transition:all .4s cubic-bezier(.22,1,.36,1)}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.5rem,5vw,4rem);transition:all .4s cubic-bezier(.22,1,.36,1);background:rgba(90,10,13,0.55);backdrop-filter:blur(16px)}
 nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(24px) saturate(160%);border-bottom:1px solid rgba(255,90,95,0.12);box-shadow:0 1px 0 rgba(255,90,95,0.08),0 8px 32px rgba(180,30,35,0.08);height:64px}
+nav.scrolled .logo-text{color:var(--ink)}
+nav.scrolled .nav-links a{color:var(--muted);font-weight:500}
+nav.scrolled .nav-links a:hover,nav.scrolled .nav-links a.active{color:var(--ink)}
+
 .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;cursor:pointer;flex-shrink:0}
 .logo-mark{width:40px;height:40px;background:var(--grad-red);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 4px 16px var(--r-glow)}
 .logo-mark::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,0.18) 50%,transparent 60%);animation:shimmer 3s infinite}
@@ -64,9 +497,9 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(24px) satura
 .logo-text{font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:700;color:var(--ink);letter-spacing:-0.5px}
 .logo-text em{color:var(--r);font-style:normal}
 .nav-links{display:flex;align-items:center;gap:.2rem;list-style:none}
-.nav-links a{font-size:.82rem;font-weight:500;letter-spacing:.01em;color:var(--muted);text-decoration:none;padding:.45rem .9rem;border-radius:50px;transition:all .25s;cursor:pointer;position:relative}
+.nav-links a{font-size:.82rem;font-weight:600;letter-spacing:.01em;color:rgba(255,255,255,0.90);text-decoration:none;padding:.45rem .9rem;border-radius:50px;transition:all .25s;cursor:pointer;position:relative}
 .nav-links a::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--r);border-radius:2px;transition:width .25s}
-.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a:hover,.nav-links a.active{color: #fff;}
 .nav-links a:hover::after,.nav-links a.active::after{width:60%}
 .nav-pill{display:flex;align-items:center;gap:.75rem}
 .nav-cta{font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.02em;color:#fff;background:var(--grad-red);border:none;border-radius:50px;padding:.6rem 1.4rem;cursor:pointer;transition:all .3s;box-shadow:0 4px 16px var(--r-glow);text-decoration:none;white-space:nowrap}
@@ -205,7 +638,7 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(24px) satura
 /* ── VENDORS SECTION ── */
 .sec-vendors{background:#FFFFFF}
 .vendors-intro{text-align:center;max-width:600px;margin:0 auto 3rem}
-.vendors-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.2rem;margin-bottom:2rem}
+.vendors-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;margin-bottom:2rem}
 .vendor-card{background:#FFFAFA;border-radius:var(--radius);padding:1.6rem 1rem;text-align:center;border:1.5px solid rgba(255,90,95,0.18);cursor:pointer;transition:all .3s;position:relative;overflow:hidden;box-shadow:0 3px 16px rgba(255,90,95,0.08)}
 .vendor-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--b-soft),transparent);opacity:0;transition:opacity .3s}
 .vendor-card:hover::before{opacity:1}
@@ -315,9 +748,9 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(24px) satura
 .feed-card{background:#FFFAFA;border-radius:var(--radius);overflow:hidden;border:1.5px solid rgba(255,90,95,0.14);transition:all .3s;box-shadow:0 3px 16px rgba(255,90,95,0.07)}
 .feed-card:hover{box-shadow:0 12px 36px rgba(255,90,95,0.14);transform:translateY(-5px);border-color:rgba(255,90,95,0.38)}
 .feed-img{height:160px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
-.feed-img.f1{background:linear-gradient(135deg,#FDE8E8,#FBCFE8)}
-.feed-img.f2{background:linear-gradient(135deg,#DBEAFE,#BFDBFE)}
-.feed-img.f3{background:linear-gradient(135deg,#FEF3C7,#FDE68A)}
+.feed-img.f1 { background: linear-gradient(135deg, #FFD6D6, #FFAEB1); }
+.feed-img.f2 { background: linear-gradient(135deg, #FFE8D6, #FFCBA8); }
+.feed-img.f3 { background: linear-gradient(135deg, #FFF3CC, #FFE082); }
 .feed-body{padding:1rem 1.1rem 1.1rem}
 .feed-user{display:flex;align-items:center;gap:.6rem;margin-bottom:.65rem}
 .feed-av{width:30px;height:30px;border-radius:50%;background:var(--grad-red);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:.6rem;font-weight:700;color:#fff;flex-shrink:0}
@@ -429,7 +862,7 @@ nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(24px) satura
 .earn-card.red-earn .en{color:#FCA5A5}
 
 /* ── FOOTER ── */
-footer{background:linear-gradient(160deg,#7A1518,#A81E23,#5c0c10);padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem) 2rem;border-top:1px solid rgba(255,255,255,0.07)}
+footer{background:#5c0c10;padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem) 2rem;border-top:1px solid rgba(255,255,255,0.07)}
 .footer-inner{max-width:1280px;margin:0 auto}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
 .footer-brand p{font-size:.84rem;color:rgba(255,255,255,0.40);line-height:1.75;max-width:260px;margin-top:1rem;font-weight:300}
@@ -631,7 +1064,13 @@ footer{background:linear-gradient(160deg,#7A1518,#A81E23,#5c0c10);padding:clamp(
 
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){.svc-layout{grid-template-columns:1fr}.svc-sticky{position:static}.how-layout{grid-template-columns:1fr;gap:3rem}.about-grid{grid-template-columns:1fr;gap:2.5rem}.about-visual{aspect-ratio:3/2}.rv-grid{grid-template-columns:1fr;gap:2.5rem}.track-layout{grid-template-columns:1fr;gap:2.5rem}.vendors-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:768px){.hero-inner{grid-template-columns:1fr}.hero-visual{display:none}.hero-sub{max-width:100%}.aud-grid{grid-template-columns:1fr}.feed-grid{grid-template-columns:1fr 1fr}.testi-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr;gap:2.5rem}.contact-grid{grid-template-columns:1fr}.dl-grid{grid-template-columns:1fr}.nav-links{display:none}.hamburger{display:flex}.cursor,.cursor-ring{display:none}.ai-grid{grid-template-columns:1fr}.services-full-grid{grid-template-columns:1fr 1fr}.vendors-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr}.hero-visual{display:none}.hero-sub{max-width:100%}.aud-grid{grid-template-columns:1fr}.feed-grid{grid-template-columns:1fr 1fr}.testi-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr;gap:2.5rem}.contact-grid{grid-template-columns:1fr}.dl-grid{grid-template-columns:1fr}.nav-links{display:none}.hamburger{display:flex}
+.cursor { display: none; }
+.cursor-ring { display: none; }
+body { cursor: pointer; }
+* { cursor: pointer; }
+p, h1, h2, h3, h4, h5, span, div { cursor: default; }
+.ai-grid{grid-template-columns:1fr}.services-full-grid{grid-template-columns:1fr 1fr}.vendors-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.feed-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.hero-stats{display:none}.form-row{grid-template-columns:1fr}.earn-grid{grid-template-columns:1fr}.cta-card{border-radius:24px}.about-kpi{grid-template-columns:1fr}.services-full-grid{grid-template-columns:1fr}.vendors-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -647,6 +1086,7 @@ footer{background:linear-gradient(160deg,#7A1518,#A81E23,#5c0c10);padding:clamp(
     <span class="logo-text">Isko<em>Dash</em></span>
   </a>
   <ul class="nav-links">
+    <li><a onclick="showPage('dashboard')" id="nav-dashboard">Dashboard</a></li>
     <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
     <li><a onclick="showPage('services')" id="nav-services">Services</a></li>
     <li><a onclick="showPage('riders')" id="nav-riders">Riders</a></li>
@@ -676,8 +1116,8 @@ footer{background:linear-gradient(160deg,#7A1518,#A81E23,#5c0c10);padding:clamp(
     <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
     <div class="hero-inner">
       <div>
-        <div class="hero-tagline">By PUPians. For PUPians.</div>
-        <div class="hero-eyebrow"><span class="line"></span> PUP Sta. Mesa Campus</div>
+        <div class="hero-eyebrow" style="margin-bottom:.6rem"><span class="line"></span> PUP Sta. Mesa Campus</div>
+<div class="hero-tagline" style="font-size:.8rem;margin-bottom:1rem;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);border-radius:50px;display:inline-block;padding:.3rem 1rem;backdrop-filter:blur(8px)">By PUPians. For PUPians. 🎓</div>
         <h1 class="hero-h1">
           Mabilis na Pagkain.<br/>
           <span class="stroke-text">Walang pababang Building.</span>
@@ -824,18 +1264,29 @@ footer{background:linear-gradient(160deg,#7A1518,#A81E23,#5c0c10);padding:clamp(
       <div class="track-layout">
         <div class="track-phone reveal">
           <div class="track-screen">
-            <div class="track-header"><div class="track-back">←</div><div class="track-title">Track Your Order</div></div>
-            <div class="track-map">
-              <div class="track-map-grid"></div>
-              <div class="track-path"></div>
-              <div class="track-path-active"></div>
-              <div class="track-rider-dot"></div>
-              <div class="track-dest">📍 Your Building</div>
+          <div class="track-header">
+            <div class="track-back">←</div>
+            <div class="track-title">Track Your Order</div>
+            <div class="track-eta-badge">
+              <div class="track-eta-num">12 min</div>
+              <span class="track-eta-label">Est. arrival</span>
             </div>
+          </div>            
+          <div class="track-map">
+            <div class="track-map-grid"></div>
+            <div class="track-path"></div>
+            <div class="track-path-active"></div>
+            <div class="track-rider-dot"></div>
+            <div class="track-dest">📍 Your Building</div>
+            <div class="track-arriving">Arriving in your Building 🏢</div>
+          </div>
             <div class="track-body">
   <div class="track-status-row"><div class="track-status-dot"></div><div class="track-status-text">Rider is on the way!</div></div>
-  <div class="track-checkin"><div class="track-ci-label">LIVE CHECK-IN</div><div class="track-ci-loc">Indoors · 4th Floor – Room 410 · Checked in = 9:41 AM ✅</div></div>
-  <div class="track-weather"><div style="font-size:1.5rem">🌧️</div><div><div class="tw-temp">26°C</div><div class="tw-desc">Light Rain · Stay dry!<br/>Your rider is almost there.</div></div></div>
+  <div class="track-checkin">
+  <div class="track-ci-label">LIVE CHECK-IN</div>
+  <div class="track-ci-loc">Indoors · 4th Floor – Room 410</div>
+  <div style="font-size:.52rem;color:rgba(255,255,255,0.65);margin-top:2px">Checked in = 9:41 AM ✅</div>
+</div>  <div class="track-weather"><div style="font-size:1.5rem">🌧️</div><div><div class="tw-temp">26°C</div><div class="tw-desc">Light Rain · Stay dry!<br/>Your rider is almost there.</div></div></div>
   <div class="track-msg-btn">💬 Message Rider</div>
 </div>
           </div>
@@ -1124,10 +1575,1541 @@ footer{background:linear-gradient(160deg,#7A1518,#A81E23,#5c0c10);padding:clamp(
     </div>
     <div style="margin-top:3rem;text-align:center" class="reveal">
       <p style="font-size:.85rem;color:var(--muted);max-width:500px;margin:0 auto">IskoDash is currently in development for PUP Sta. Mesa campus. By PUPians, For PUPians. 🎓</p>
+<p style="font-family:'Unbounded',sans-serif;font-size:.9rem;font-weight:800;color:var(--r2);margin-top:1rem;letter-spacing:.05em">MABILIS. AFFORDABLE.<br/>AT PARA SA ATING PUP COMMUNITY. ❤️</p>
+    </div>
+  </div></section>
+</div>
+<!-- ═══ PAGE: DASHBOARD ═══ -->
+<div class="page" id="page-dashboard">
+  <div style="padding-top:72px">
+    <div class="dashboard-layout">
+
+      <!-- LEFT SIDEBAR -->
+      <aside class="db-sidebar">
+        <div class="db-sidebar-logo">
+          <div class="logo-mark">ID</div>
+          <span>Isko<em>Dash</em></span>
+        </div>
+        <a class="db-nav-item active">
+          <span class="db-nav-icon">🏠</span> Dashboard
+        </a>
+        <a class="db-nav-item">
+          <span class="db-nav-icon">👥</span> Groups
+        </a>
+        <a class="db-nav-item">
+          <span class="db-nav-icon">📋</span> Orders
+        </a>
+        <a class="db-nav-item">
+          <span class="db-nav-icon">📍</span> Meetups
+        </a>
+        <a class="db-nav-item">
+          <span class="db-nav-icon">📊</span> Analytics
+        </a>
+        <a class="db-nav-item">
+          <span class="db-nav-icon">💬</span> Messages
+        </a>
+        <a class="db-nav-item" style="margin-top:auto">
+          <span class="db-nav-icon">⚙️</span> Settings
+        </a>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="db-main">
+
+        <!-- Top Bar -->
+        <div class="db-topbar">
+          <div>
+            <h2>Welcome back, Isko Group! 👋</h2>
+            <p>Here's what's happening on campus today.</p>
+          </div>
+          <div class="db-notif-btn">🔔</div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="db-stats-row">
+          <div class="db-stat-card">
+            <div class="dsc-label">Active Group Orders</div>
+            <div class="dsc-value">12</div>
+            <div class="dsc-sub green">▲ +20% from yesterday</div>
+          </div>
+          <div class="db-stat-card">
+            <div class="dsc-label">Upcoming Meetups</div>
+            <div class="dsc-value">3</div>
+            <div class="dsc-sub">Today · 11:30 AM</div>
+          </div>
+          <div class="db-stat-card">
+            <div class="dsc-label">Total Members</div>
+            <div class="dsc-value">8</div>
+            <div class="dsc-sub green">All online</div>
+          </div>
+          <div class="db-stat-card">
+            <div class="dsc-label">Total Saved</div>
+            <div class="dsc-value">₱245</div>
+            <div class="dsc-sub">This month</div>
+          </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="db-content-grid">
+
+          <!-- Left col: Upcoming Meetup + Group Chat -->
+          <div style="display:flex;flex-direction:column;gap:1.2rem">
+
+            <!-- Upcoming Meetup -->
+            <div class="db-card">
+              <div class="db-card-title">
+                Upcoming Meetup
+                <a>View All</a>
+              </div>
+              <div class="db-meetup-banner">
+                <div class="db-meetup-date">Today, 11:30 AM</div>
+                <div class="db-meetup-loc">📍 Near PUP Lagoon</div>
+                <div class="db-meetup-tags">
+                  <span class="db-meetup-tag">🌧️ Light Rain · 26°C</span>
+                  <span class="db-meetup-tag">✅ Most of you are free</span>
+                  <span class="db-meetup-tag">👥 Less crowd</span>
+                </div>
+                <div class="db-meetup-avatars">
+                  <div class="db-av">JR</div>
+                  <div class="db-av">KF</div>
+                  <div class="db-av">TD</div>
+                  <div class="db-av">ZV</div>
+                  <div class="db-av">+4</div>
+                  <span class="db-av-label">8 members going</span>
+                </div>
+                <button class="db-meetup-btn">View Details →</button>
+              </div>
+            </div>
+
+            <!-- Group Chat -->
+            <div class="db-card">
+              <div class="db-card-title">Group Chat</div>
+              <div class="db-chat-list">
+                <div class="db-chat-msg">
+                  <div class="db-chat-av">JR</div>
+                  <div class="db-chat-bubble">
+                    <div class="db-chat-name">Jiro</div>
+                    <div class="db-chat-text">Saan tayo magkikita?</div>
+                  </div>
+                  <div class="db-chat-time">11:02 AM</div>
+                </div>
+                <div class="db-chat-msg">
+                  <div class="db-chat-av">KF</div>
+                  <div class="db-chat-bubble">
+                    <div class="db-chat-name">Kyle</div>
+                    <div class="db-chat-text">Sa bench malapit sa lagoon!</div>
+                  </div>
+                  <div class="db-chat-time">11:05 AM</div>
+                </div>
+                <div class="db-chat-msg">
+                  <div class="db-chat-av">ZV</div>
+                  <div class="db-chat-bubble">
+                    <div class="db-chat-name">Zedrick</div>
+                    <div class="db-chat-text">See you all! Order na ako 😄</div>
+                  </div>
+                  <div class="db-chat-time">11:10 AM</div>
+                </div>
+              </div>
+              <div class="db-chat-input">
+                <input type="text" placeholder="Type a message…" />
+                <button class="db-chat-send">➤</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right col: Recent Orders -->
+          <div class="db-card">
+            <div class="db-card-title">
+              Recent Orders
+              <a>View All Orders</a>
+            </div>
+            <div class="db-order-list">
+              <div class="db-order-item">
+                <div class="db-order-emoji">🌭</div>
+                <div>
+                  <div class="db-order-name">Fewa's Footlong</div>
+                  <div class="db-order-sub">Jiro · 2 pcs</div>
+                </div>
+                <div class="db-order-time">9:41 AM</div>
+                <div class="db-order-price">₱178</div>
+              </div>
+              <div class="db-order-item">
+                <div class="db-order-emoji">🍚</div>
+                <div>
+                  <div class="db-order-name">B1T1 Siomai Rice</div>
+                  <div class="db-order-sub">Kyle · 1 pc</div>
+                </div>
+                <div class="db-order-time">10:05 AM</div>
+                <div class="db-order-price">₱60</div>
+              </div>
+              <div class="db-order-item">
+                <div class="db-order-emoji">☕</div>
+                <div>
+                  <div class="db-order-name">Kape Kuripot</div>
+                  <div class="db-order-sub">Tito · 2 pcs</div>
+                </div>
+                <div class="db-order-time">10:30 AM</div>
+                <div class="db-order-price">₱70</div>
+              </div>
+              <div class="db-order-item">
+                <div class="db-order-emoji">🍽️</div>
+                <div>
+                  <div class="db-order-name">Stall #10</div>
+                  <div class="db-order-sub">Zedrick · 1 pc</div>
+                </div>
+                <div class="db-order-time">10:55 AM</div>
+                <div class="db-order-price">₱75</div>
+              </div>
+              <div class="db-order-item">
+                <div class="db-order-emoji">🧇</div>
+                <div>
+                  <div class="db-order-name">Waffle Time</div>
+                  <div class="db-order-sub">Jiro · 2 pcs</div>
+                </div>
+                <div class="db-order-time">11:00 AM</div>
+                <div class="db-order-price">₱110</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IskoDash — By PUPians. For PUPians.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --r:  #FF5A5F; --r2: #F03E44; --r3: #D4262C; --r4: #A81E23;
+  --r-glow: rgba(255,90,95,0.30); --r-soft: rgba(255,90,95,0.08); --r-soft2: rgba(255,90,95,0.15);
+  --gold: #F5A623; --gold2: #E8950F;
+  --b:  #F03E44; --b2: #D4262C; --b3: #A81E23; --b4: #7A1518;
+  --b-soft: rgba(255,90,95,0.08); --b-soft2: rgba(255,90,95,0.15);
+  --b-glow: rgba(255,90,95,0.25);
+  --sky: #FFB3B5; --sky2: #FF8A8D;
+  --cream: #FFFFFF; --ink: #1A0608; --ink2: #2D0A0D;
+  --surface: #FFFFFF; --surface2: #FFF8F8;
+  --muted: #7A4A4D; --muted2: #B08082;
+  --border: rgba(255,90,95,0.12); --border2: rgba(255,90,95,0.28);
+  --glass: rgba(255,255,255,0.08); --glass2: rgba(255,255,255,0.16);
+  --shadow-sm: 0 2px 12px rgba(255,90,95,0.07);
+  --shadow-md: 0 8px 40px rgba(255,90,95,0.12);
+  --shadow-lg: 0 24px 80px rgba(255,90,95,0.16);
+  --radius-sm: 12px; --radius: 20px; --radius-lg: 32px; --radius-xl: 48px;
+  --grad-hero: linear-gradient(135deg, #7A1518 0%, #A81E23 40%, #8B1A1F 70%, #3d0608 100%);
+  --grad-red:  linear-gradient(135deg, #FF5A5F, #F03E44);
+  --grad-blue: linear-gradient(135deg, #A81E23, #D4262C, #F03E44);
+  --grad-mixed: linear-gradient(135deg, #A81E23 0%, #D4262C 50%, #F03E44 100%);
+  --grad-page: linear-gradient(180deg, #FFFFFF 0%, #FFF8F8 50%, #FFFFFF 100%);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;cursor:default}
+.cursor{display:none}.cursor-ring{display:none}
+*{cursor:default}
+a,button,.vendor-card,.svc-card,.aud-card,.feed-act,.store-badge,.ps-vendor-card,.nav-cta,.btn-red,.btn-blue,.btn-outline,.btn-white,.btn-w-solid,.btn-hero-primary,.btn-hero-ghost,.hamburger,.soc-btn,.footer-col a,.mobile-menu a,.ps-tab,.track-back,.track-msg-btn,.ps-notif-btn{cursor:pointer}
+
+/* ── PAGE TRANSITIONS ── */
+.page{display:none}
+.page.active{display:block;animation:pageFade .45s cubic-bezier(.22,1,.36,1) both}
+@keyframes pageFade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.5rem,5vw,4rem);transition:all .4s cubic-bezier(.22,1,.36,1);background:rgba(90,10,13,0.55);backdrop-filter:blur(16px)}
+nav.scrolled{background:rgba(255,255,255,0.97);backdrop-filter:blur(24px) saturate(160%);border-bottom:1px solid rgba(255,90,95,0.12);box-shadow:0 1px 0 rgba(255,90,95,0.08),0 8px 32px rgba(180,30,35,0.08);height:64px}
+nav.scrolled .logo-text{color:var(--ink)}
+nav.scrolled .nav-links a{color:var(--muted);font-weight:500}
+nav.scrolled .nav-links a:hover,nav.scrolled .nav-links a.active{color:var(--ink)}
+
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;cursor:pointer;flex-shrink:0}
+.logo-mark{width:40px;height:40px;background:var(--grad-red);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 4px 16px var(--r-glow)}
+.logo-mark::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,0.18) 50%,transparent 60%);animation:shimmer 3s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.logo-mark span{font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:800;color:#fff;letter-spacing:-0.5px;position:relative;z-index:1}
+.logo-text{font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:-0.5px}
+nav.scrolled .logo-text{color:var(--ink)}
+.logo-text em{color:var(--r);font-style:normal}
+.nav-links{display:flex;align-items:center;gap:.2rem;list-style:none}
+.nav-links a{font-size:.82rem;font-weight:600;letter-spacing:.01em;color:rgba(255,255,255,0.90);text-decoration:none;padding:.45rem .9rem;border-radius:50px;transition:all .25s;cursor:pointer;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--r);border-radius:2px;transition:width .25s}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-links a:hover::after,.nav-links a.active::after{width:60%}
+.nav-pill{display:flex;align-items:center;gap:.75rem}
+.nav-cta{font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.02em;color:#fff;background:var(--grad-red);border:none;border-radius:50px;padding:.6rem 1.4rem;cursor:pointer;transition:all .3s;box-shadow:0 4px 16px var(--r-glow);text-decoration:none;white-space:nowrap}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--r-glow)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+nav.scrolled .hamburger span{background:var(--ink)}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;z-index:400;background:rgba(245,248,255,0.98);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:1.2rem clamp(1.5rem,5vw,4rem);flex-direction:column;gap:.3rem;box-shadow:0 20px 60px rgba(11,18,48,0.10)}
+.mobile-menu.open{display:flex;animation:slideDown .3s ease both}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.mobile-menu a{font-size:.95rem;font-weight:500;color:var(--muted);text-decoration:none;padding:.75rem 1rem;border-radius:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.6rem}
+.mobile-menu a:hover,.mobile-menu a.active{background:var(--r-soft);color:var(--r);font-weight:600}
+
+/* ── HERO ── */
+.hero{min-height:100svh;background:var(--grad-hero);position:relative;overflow:hidden;display:flex;align-items:center;padding:80px clamp(1.5rem,5vw,4rem) 60px}
+.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 55% 45% at 10% 15%, rgba(255,90,95,0.55) 0%, transparent 60%),radial-gradient(ellipse 45% 55% at 88% 85%, rgba(255,160,163,0.20) 0%, transparent 55%),radial-gradient(ellipse 35% 35% at 55% 25%, rgba(255,200,200,0.15) 0%, transparent 60%),linear-gradient(160deg,#4a0a0c 0%,#7A1518 45%,#3d0608 100%)}
+.hero-grain{position:absolute;inset:0;z-index:1;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px}
+.hero-grid{position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:60px 60px}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:1}
+.orb-1{width:520px;height:520px;background:rgba(255,90,95,0.32);top:-120px;left:-80px;animation:orbFloat 8s ease-in-out infinite}
+.orb-2{width:360px;height:360px;background:rgba(255,160,163,0.18);bottom:-100px;right:8%;animation:orbFloat 10s ease-in-out infinite reverse}
+.orb-3{width:260px;height:260px;background:rgba(255,200,200,0.14);top:38%;right:28%;animation:orbFloat 6s ease-in-out infinite}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-28px) scale(1.04)}}
+
+.hero-inner{max-width:1280px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:2}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--sky);margin-bottom:1.5rem;animation:fadeUp .6s ease both}
+.hero-eyebrow .line{width:28px;height:1px;background:var(--sky)}
+.hero-tagline{font-family:'Unbounded',sans-serif;font-size:.72rem;font-weight:700;color:var(--sky);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem;animation:fadeUp .62s .03s ease both}
+.hero-h1{font-family:'Unbounded',sans-serif;font-size:clamp(2.1rem,4.4vw,3.7rem);font-weight:800;line-height:1.06;color:#fff;margin-bottom:1.5rem;letter-spacing:-1.5px;animation:fadeUp .7s .08s ease both}
+.hero-h1 .accent{background:linear-gradient(90deg,var(--sky),#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block}
+.hero-h1 .stroke-text{-webkit-text-stroke:1.5px rgba(255,255,255,0.28);color:transparent}
+.hero-sub{font-size:.98rem;line-height:1.85;color:rgba(255,255,255,0.55);max-width:420px;margin-bottom:2.5rem;animation:fadeUp .7s .16s ease both;font-weight:300}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;animation:fadeUp .7s .24s ease both}
+
+.btn-hero-primary{display:inline-flex;align-items:center;gap:.6rem;background:var(--grad-red);color:#fff;border-radius:50px;padding:.9rem 2rem;font-weight:700;font-size:.9rem;border:none;cursor:pointer;box-shadow:0 4px 20px var(--r-glow);transition:all .3s;letter-spacing:.01em;text-decoration:none}
+.btn-hero-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px var(--r-glow)}
+.btn-hero-primary .arrow{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.btn-hero-ghost{display:inline-flex;align-items:center;gap:.6rem;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.15);border-radius:50px;padding:.9rem 1.8rem;font-weight:500;font-size:.9rem;cursor:pointer;transition:all .3s;backdrop-filter:blur(12px);text-decoration:none}
+.btn-hero-ghost:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28);color:#fff}
+
+.store-badges{display:flex;gap:.8rem;flex-wrap:wrap;animation:fadeUp .7s .32s ease both}
+.store-badge{display:flex;align-items:center;gap:.7rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:.6rem 1.1rem;cursor:pointer;transition:all .3s;backdrop-filter:blur(12px)}
+.store-badge:hover{background:rgba(255,255,255,0.13);transform:translateY(-2px)}
+.store-badge .sb-icon{font-size:1.4rem}
+.store-badge .sb-text{display:flex;flex-direction:column}
+.store-badge .sb-label{font-size:.58rem;color:rgba(255,255,255,0.45);font-weight:400}
+.store-badge .sb-name{font-size:.82rem;color:#fff;font-weight:600;letter-spacing:-.3px}
+
+.hero-stats{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:2rem;animation:fadeUp .7s .4s ease both}
+.stat-pill{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.10);border-radius:50px;padding:.45rem 1rem;display:flex;align-items:center;gap:.5rem;backdrop-filter:blur(8px)}
+.stat-pill .sp-num{font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700;color:var(--sky)}
+.stat-pill .sp-label{font-size:.72rem;color:rgba(255,255,255,0.50)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* ── PHONE MOCKUP ── */
+.hero-visual{display:flex;justify-content:center;align-items:center;animation:fadeUp .9s .2s ease both}
+.phone-stage{position:relative;width:300px}
+.phone-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse 70% 70% at 50% 60%,rgba(168,30,35,0.40) 0%,transparent 70%);filter:blur(20px);animation:orbFloat 5s ease-in-out infinite}
+.phone{width:270px;height:580px;background:#060D28;border-radius:44px;border:1px solid rgba(255,255,255,0.12);position:relative;overflow:hidden;box-shadow:0 0 0 8px rgba(255,255,255,0.03),0 40px 100px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,255,255,0.08);transform:rotate(2deg);margin:0 auto}
+.phone-notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:80px;height:24px;background:#060D28;border-radius:0 0 18px 18px;z-index:10}
+.phone-screen{width:100%;height:100%;overflow:hidden;display:flex;flex-direction:column}
+
+.ps-header{background:linear-gradient(160deg,var(--b3),var(--b2));padding:38px 14px 10px;flex-shrink:0}
+.ps-top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ps-greeting{font-size:.62rem;color:rgba(255,255,255,0.7);margin-bottom:1px}
+.ps-greeting strong{font-size:.72rem;color:#fff;font-weight:700;font-family:'Unbounded',sans-serif}
+.ps-notif-btn{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer}
+.ps-search-bar{background:rgba(255,255,255,0.18);border-radius:10px;padding:7px 12px;font-size:.62rem;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:6px}
+
+.ps-deliver-banner{background:var(--r3);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ps-deliver-text{font-family:'Unbounded',sans-serif;font-size:.58rem;font-weight:800;color:#fff;line-height:1.3}
+.ps-deliver-text span{font-size:.5rem;font-weight:400;color:rgba(255,255,255,0.82);display:block}
+.ps-deliver-emoji{font-size:1.4rem}
+
+.ps-body{background:#F5F0E8;flex:1;padding:10px 10px 0;overflow:hidden;display:flex;flex-direction:column;gap:8px}
+.ps-section-label{font-family:'Unbounded',sans-serif;font-size:.48rem;font-weight:800;color:var(--b2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.ps-lagoon-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:2px}
+.ps-vendor-card{background:#fff;border-radius:8px;padding:6px 4px;text-align:center;box-shadow:0 1px 6px rgba(168,30,35,0.10);cursor:pointer;border:1px solid transparent}
+.ps-vendor-card .pv-emoji{font-size:1rem;margin-bottom:2px}
+.ps-vendor-card .pv-name{font-size:.44rem;font-weight:700;color:var(--ink);line-height:1.2}
+.ps-vendor-card .pv-rating{font-size:.4rem;color:#F59E0B;margin-top:1px}
+.ps-vendor-card .pv-price{font-size:.42rem;color:var(--r);font-weight:600;margin-top:1px}
+.ps-vendor-card.featured{border:1px solid var(--b2);background:linear-gradient(135deg,#fff,#FFF0F0)}
+
+.ps-ai-box{background:linear-gradient(135deg,var(--b4),var(--b3));border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+.ps-ai-badge{background:var(--r);border-radius:6px;padding:2px 6px;font-size:.48rem;font-weight:800;color:#fff;font-family:'Unbounded',sans-serif;flex-shrink:0}
+.ps-ai-text{font-size:.56rem;color:rgba(255,255,255,0.90);font-weight:400;line-height:1.4}
+.ps-ai-text strong{color:var(--sky);font-weight:700}
+
+.ps-bottom{position:absolute;bottom:0;left:0;right:0;background:rgba(245,240,232,0.97);backdrop-filter:blur(12px);border-top:1px solid rgba(255,90,95,0.15);padding:8px 0 12px;display:flex;justify-content:space-around;align-items:center}
+.ps-tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.5rem;color:var(--muted2);cursor:pointer}
+.ps-tab.act{color:var(--r2)}
+.ps-tab .ps-tab-icon{font-size:.85rem}
+
+.float-card{position:absolute;background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);border:1px solid rgba(168,30,35,0.15);border-radius:16px;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 40px rgba(0,0,0,0.16);animation:floatAnim 4s ease-in-out infinite;white-space:nowrap}
+.float-card.fc1{top:60px;right:-60px;animation-delay:0s}
+.float-card.fc2{bottom:90px;left:-70px;animation-delay:2s}
+.float-card .fc-icon{font-size:1.3rem}
+.float-card .fc-title{font-size:.72rem;font-weight:700;color:var(--ink)}
+.float-card .fc-sub{font-size:.62rem;color:var(--muted)}
+@keyframes floatAnim{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ── TRUST BAR ── */
+.trust-bar{background:linear-gradient(135deg,#A81E23,#D4262C);padding:1rem clamp(1.5rem,5vw,4rem);display:flex;justify-content:center;gap:clamp(1.5rem,4vw,3.5rem);flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.08)}
+.tb-item{display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:rgba(255,255,255,0.70);font-weight:400;transition:color .2s;cursor:default}
+.tb-item:hover{color:rgba(255,255,255,0.95)}
+.tb-item .tb-dot{width:6px;height:6px;border-radius:50%;background:var(--sky);flex-shrink:0;box-shadow:0 0 8px var(--sky);transition:transform .2s}
+.tb-item:hover .tb-dot{transform:scale(1.4)}
+
+/* ── SHARED SECTION ── */
+.sec{padding:clamp(60px,8vw,100px) clamp(1.5rem,5vw,4rem)}
+.sec-inner{max-width:1280px;margin:0 auto}
+.tag{display:inline-flex;align-items:center;gap:.5rem;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--r2);margin-bottom:1rem}
+.tag::before{content:'';width:20px;height:1px;background:var(--r2)}
+.display-h{font-family:'Unbounded',sans-serif;font-size:clamp(1.9rem,3.8vw,3.1rem);font-weight:800;line-height:1.1;letter-spacing:-1.5px;color:var(--ink);margin-bottom:1.2rem}
+.display-h .it{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;letter-spacing:0}
+.body-lg{font-size:1.02rem;line-height:1.82;color:var(--muted);max-width:520px;font-weight:300}
+
+/* ── BUTTONS ── */
+.btn-red{display:inline-flex;align-items:center;gap:.6rem;background:var(--grad-red);color:#fff;border-radius:50px;border:none;padding:.85rem 2rem;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px var(--r-glow);text-decoration:none;letter-spacing:.01em}
+.btn-red:hover{transform:translateY(-3px);box-shadow:0 10px 36px var(--r-glow)}
+.btn-blue{display:inline-flex;align-items:center;gap:.6rem;background:var(--grad-red);color:#fff;border-radius:50px;border:none;padding:.85rem 2rem;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px var(--r-glow);text-decoration:none;letter-spacing:.01em}
+.btn-blue:hover{transform:translateY(-3px);box-shadow:0 10px 36px var(--r-glow)}
+.btn-outline{display:inline-flex;align-items:center;gap:.6rem;background:transparent;color:var(--b);border:1.5px solid var(--border2);border-radius:50px;padding:.85rem 2rem;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .3s;text-decoration:none}
+.btn-outline:hover{background:var(--b-soft)}
+.btn-white{display:inline-flex;align-items:center;gap:.6rem;background:rgba(255,255,255,0.14);color:#fff;border:1px solid rgba(255,255,255,0.22);border-radius:50px;backdrop-filter:blur(12px);padding:.8rem 1.8rem;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .3s;text-decoration:none}
+.btn-white:hover{background:rgba(255,255,255,0.24);transform:translateY(-2px)}
+.btn-w-solid{display:inline-flex;align-items:center;gap:.6rem;background:#fff;color:var(--r2);border:none;border-radius:50px;padding:.85rem 2rem;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .3s;text-decoration:none}
+.btn-w-solid:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,0.15)}
+
+/* ── VENDORS SECTION ── */
+.sec-vendors{background:linear-gradient(180deg, #ffffff 0%, #fff5f5 100%)}
+.vendors-intro{text-align:center;max-width:600px;margin:0 auto 3rem}
+.vendors-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;margin-bottom:2rem}
+.vendor-card{background:#FFFAFA;border-radius:var(--radius);padding:1.6rem 1rem;text-align:center;border:1.5px solid rgba(255,90,95,0.18);cursor:pointer;transition:all .35s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;box-shadow:0 2px 0 rgba(255,90,95,0.18),0 6px 24px rgba(255,90,95,0.08)}
+.vendor-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--b-soft),transparent);opacity:0;transition:opacity .3s}
+.vendor-card:hover::before{opacity:1}
+.vendor-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 2px 0 rgba(255,90,95,0.30),0 20px 48px rgba(255,90,95,0.16)}
+.vendor-card .vc-emoji{font-size:2.2rem;margin-bottom:.8rem;display:block}
+.vendor-card h3{font-family:'Unbounded',sans-serif;font-size:.72rem;font-weight:800;color:var(--ink);margin-bottom:.3rem;letter-spacing:-.3px}
+.vendor-card .vc-type{font-size:.68rem;color:var(--r2);font-weight:600;margin-bottom:.3rem}
+.vendor-card .vc-price{font-size:.65rem;color:var(--muted);font-weight:300}
+.vendor-card .vc-rating{font-size:.65rem;color:#F59E0B;margin-top:.4rem}
+.vendor-card.bestseller::after{content:'BEST SELLER';position:absolute;top:10px;right:-18px;background:var(--r);color:#fff;font-size:.45rem;font-weight:800;font-family:'Unbounded',sans-serif;padding:3px 22px;transform:rotate(45deg);letter-spacing:.05em}
+
+/* ── SERVICE CARDS ── */
+.sec-services{background:#FFF2F2}
+.svc-layout{display:grid;grid-template-columns:1fr 2fr;gap:5rem;align-items:start;margin-top:3rem}
+.svc-sticky{position:sticky;top:90px}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.svc-card{background:#FFFAFA;border-radius:var(--radius);padding:1.8rem;border:1.5px solid rgba(255,90,95,0.15);cursor:pointer;transition:all .3s;position:relative;overflow:hidden;box-shadow:0 3px 14px rgba(255,90,95,0.07)}
+.svc-card::before{content:'';position:absolute;inset:0;border-radius:var(--radius);background:linear-gradient(135deg,var(--b-soft),transparent);opacity:0;transition:opacity .3s}
+.svc-card:hover::before{opacity:1}
+.svc-card:hover{border-color:rgba(255,90,95,0.38);transform:translateY(-4px);box-shadow:0 10px 32px rgba(255,90,95,0.13)}
+.svc-card:hover .svc-icon-wrap{background:var(--grad-blue);box-shadow:0 8px 24px rgba(255,90,95,0.28)}
+.svc-card:hover .svc-icon-wrap span{filter:brightness(0) invert(1)}
+.svc-icon-wrap{width:52px;height:52px;border-radius:14px;background:rgba(255,90,95,0.10);border:1px solid rgba(255,90,95,0.16);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1.2rem;transition:all .3s}
+.svc-card h3{font-family:'Unbounded',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:-.3px;color:var(--ink);margin-bottom:.5rem}
+.svc-card p{font-size:.84rem;color:var(--muted);line-height:1.65;font-weight:300}
+.svc-card .svc-link{display:inline-flex;align-items:center;gap:.3rem;font-size:.78rem;font-weight:600;color:var(--b);margin-top:.9rem}
+
+/* ── HOW IT WORKS ── */
+.sec-how{background:linear-gradient(160deg,#7A1518 0%,#A81E23 60%,#6b0f13 100%)}
+.sec-how .display-h{color:#fff}
+.sec-how .body-lg{color:rgba(255,255,255,0.50)}
+.how-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:4rem}
+.steps{display:flex;flex-direction:column;gap:0}
+.step-item{display:flex;gap:1.5rem;align-items:flex-start;padding:1.8rem 0;border-bottom:1px solid rgba(255,255,255,0.07);transition:all .3s;cursor:default}
+.step-item:last-child{border-bottom:none}
+.step-item:hover .step-num{background:var(--grad-red);transform:scale(1.05)}
+.step-item:hover{background:rgba(255,255,255,0.04);border-radius:12px;padding-left:1rem}
+.step-num{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:.72rem;font-weight:800;color:var(--sky);flex-shrink:0;transition:all .3s}
+.step-text h4{font-family:'Unbounded',sans-serif;font-size:.88rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.3px}
+.step-text p{font-size:.88rem;color:rgba(255,255,255,0.50);line-height:1.7;font-weight:300}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.06);border-radius:var(--radius);overflow:hidden}
+.stat-block{background:rgba(255,255,255,0.04);padding:2rem;transition:background .3s}
+.stat-block:hover{background:rgba(255,90,95,0.15)}
+.stat-block .sb-num{font-family:'Unbounded',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;background:linear-gradient(135deg,var(--sky),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-2px;line-height:1;margin-bottom:.5rem}
+.stat-block .sb-label{font-size:.82rem;color:rgba(255,255,255,0.45);line-height:1.5;font-weight:300}
+.stat-block.wide{grid-column:1/-1;border-top:1px solid rgba(255,255,255,0.05)}
+
+/* ── AI CARDS ── */
+.sec-ai{background:linear-gradient(180deg, #fff2f2 0%, #fff8f8 100%)}
+.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.ai-card{background:linear-gradient(145deg, #ffffff, #fff8f8);border-radius:var(--radius);padding:2rem;border:1.5px solid rgba(255,90,95,0.14);transition:all .3s;box-shadow:0 4px 24px rgba(255,90,95,0.08),inset 0 1px 0 rgba(255,255,255,0.9);position:relative;overflow:hidden}
+.ai-card::after{content:'';position:absolute;top:-60px;right:-60px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(255,90,95,0.06) 0%,transparent 70%);pointer-events:none}
+.ai-card:hover{border-color:rgba(255,90,95,0.40);box-shadow:0 12px 36px rgba(255,90,95,0.14);transform:translateY(-4px)}
+.ai-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(240,62,68,0.10);border:1px solid rgba(240,62,68,0.22);border-radius:50px;padding:.3rem .8rem;font-size:.6rem;font-weight:700;color:var(--r2);font-family:'Unbounded',sans-serif;margin-bottom:1rem;letter-spacing:.05em}
+.ai-card h3{font-family:'Unbounded',sans-serif;font-size:.9rem;font-weight:800;color:var(--ink);margin-bottom:.6rem;letter-spacing:-.3px}
+.ai-card p{font-size:.84rem;color:var(--muted);line-height:1.7;font-weight:300}
+
+/* ── AUDIENCE CARDS ── */
+.sec-audience{background:linear-gradient(180deg, #fff8f8 0%, #ffffff 100%)}
+.aud-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem}
+.aud-card{border-radius:var(--radius-lg);padding:3rem;position:relative;overflow:hidden;cursor:pointer;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.aud-card:hover{transform:scale(1.01) translateY(-4px)}
+.aud-card.riders{background:linear-gradient(145deg,var(--r4),var(--r3),var(--r2))}
+.aud-card.vendors{background:linear-gradient(145deg,#A81E23,#D4262C,#F03E44)}
+.aud-card::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.07)}
+.aud-card::after{content:'';position:absolute;bottom:-60px;left:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.aud-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.18);border-radius:50px;padding:.3rem .9rem;font-size:.68rem;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:1.5rem}
+.aud-card h3{font-family:'Unbounded',sans-serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:.8rem;line-height:1.15}
+.aud-card p{font-size:.92rem;color:rgba(255,255,255,0.65);line-height:1.75;margin-bottom:2rem;font-weight:300;max-width:360px}
+.aud-perks{display:flex;flex-direction:column;gap:.55rem;margin-bottom:2rem}
+.aud-perk{display:flex;align-items:center;gap:.7rem;font-size:.86rem;color:rgba(255,255,255,0.88);font-weight:400}
+.aud-check{width:20px;height:20px;border-radius:6px;flex-shrink:0;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;font-size:.65rem}
+
+/* ── TRACKING ── */
+.sec-track{background:linear-gradient(180deg, #fff5f5 0%, #ffffff 100%);position:relative;overflow:hidden}
+.track-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3rem}
+.track-phone{width:240px;margin:0 auto;position:relative}
+.track-screen{background:#060D28;border-radius:36px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);box-shadow:0 30px 80px rgba(0,0,0,0.20)}
+.track-header{background:linear-gradient(135deg,var(--b3),var(--b2));padding:30px 14px 12px;display:flex;align-items:center;gap:8px}
+.track-back{color:rgba(255,255,255,0.7);font-size:.8rem;cursor:pointer}
+.track-title{font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:800;color:#fff;flex:1}
+/* ETA badge in header */
+.track-eta-badge{background:rgba(255,255,255,0.18);border-radius:8px;padding:4px 8px;text-align:right;flex-shrink:0}
+.track-eta-num{font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:800;color:#fff}
+.track-eta-label{font-size:.45rem;color:rgba(255,255,255,0.7);display:block}
+.track-map{background:linear-gradient(145deg,#0A1A30,#06122A);height:160px;position:relative;overflow:hidden}
+.track-map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:20px 20px}
+.track-path{position:absolute;bottom:30px;left:20px;right:20px;height:2px;background:rgba(255,90,95,0.25);border-radius:2px}
+.track-path-active{position:absolute;bottom:30px;left:20px;width:60%;height:2px;background:var(--r2);border-radius:2px}
+.track-rider-dot{position:absolute;bottom:24px;left:55%;width:14px;height:14px;background:var(--r);border-radius:50%;border:2px solid #fff;animation:pulse2 1.5s infinite}
+@keyframes pulse2{0%,100%{box-shadow:0 0 0 0 var(--r-glow)}50%{box-shadow:0 0 0 6px transparent}}
+.track-dest{position:absolute;bottom:22px;right:20px;font-size:.55rem;color:#fff;background:rgba(255,255,255,0.12);border-radius:6px;padding:2px 6px}
+/* Arriving badge on map */
+.track-arriving{position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.20);border-radius:8px;padding:4px 8px;font-size:.52rem;color:#fff;backdrop-filter:blur(8px)}
+.track-body{background:#F5F0E8;padding:12px}
+.track-status-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.track-status-dot{width:8px;height:8px;border-radius:50%;background:var(--r);animation:pulse2 1.5s infinite;flex-shrink:0}
+.track-status-text{font-size:.62rem;font-weight:700;color:var(--r);font-family:'Unbounded',sans-serif}
+.track-checkin{background:linear-gradient(135deg,var(--b3),var(--b2));border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.track-ci-label{font-size:.5rem;color:rgba(255,255,255,0.65);margin-bottom:2px;font-family:'Unbounded',sans-serif;font-weight:700;letter-spacing:.05em}
+.track-ci-loc{font-size:.62rem;font-weight:700;color:#fff}
+.track-weather{display:flex;align-items:center;gap:6px;background:#fff;border-radius:8px;padding:6px 10px;border:1px solid rgba(255,90,95,0.12)}
+.track-weather .tw-temp{font-family:'Unbounded',sans-serif;font-size:.9rem;font-weight:800;color:var(--ink)}
+.track-weather .tw-desc{font-size:.52rem;color:var(--muted);line-height:1.3}
+.track-msg-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--r2);border-radius:8px;padding:7px;margin-top:8px;font-size:.6rem;font-weight:700;color:#fff;font-family:'Unbounded',sans-serif;cursor:pointer;letter-spacing:.03em}
+.track-features{display:flex;flex-direction:column;gap:1.5rem}
+.track-feat{display:flex;gap:1.2rem;align-items:flex-start}
+.tf-icon{width:48px;height:48px;border-radius:14px;background:rgba(255,90,95,0.10);border:1px solid rgba(255,90,95,0.18);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.tf-title{font-family:'Unbounded',sans-serif;font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:.3rem}
+.tf-desc{font-size:.84rem;color:var(--muted);line-height:1.65;font-weight:300}
+
+/* ── SOCIAL FEED ── */
+.sec-feed{background:linear-gradient(180deg, #ffffff 0%, #fff5f5 100%)}
+.feed-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.feed-card{background:#FFFAFA;border-radius:var(--radius);overflow:hidden;border:1.5px solid rgba(255,90,95,0.14);transition:all .3s;box-shadow:0 3px 16px rgba(255,90,95,0.07)}
+.feed-card:hover{box-shadow:0 12px 36px rgba(255,90,95,0.14);transform:translateY(-5px);border-color:rgba(255,90,95,0.38)}
+.feed-img{height:160px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
+.feed-img.f1{background:linear-gradient(135deg,#FFD6D6,#FFAEB1)}
+.feed-img.f2{background:linear-gradient(135deg,#FFE8D6,#FFCBA8)}
+.feed-img.f3{background:linear-gradient(135deg,#FFF3CC,#FFE082)}
+.feed-body{padding:1rem 1.1rem 1.1rem}
+.feed-user{display:flex;align-items:center;gap:.6rem;margin-bottom:.65rem}
+.feed-av{width:30px;height:30px;border-radius:50%;background:var(--grad-red);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:.6rem;font-weight:700;color:#fff;flex-shrink:0}
+.feed-uname{font-size:.8rem;font-weight:700;color:var(--ink)}
+.feed-store{font-size:.68rem;color:var(--b);font-weight:500}
+.feed-cap{font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:.8rem;font-weight:300}
+.feed-acts{display:flex;gap:1rem}
+.feed-act{display:flex;align-items:center;gap:.3rem;font-size:.75rem;color:var(--muted2);font-weight:500;cursor:pointer;transition:color .2s}
+.feed-act:hover{color:var(--r)}
+
+/* ── TESTIMONIALS ── */
+.sec-testi{background:linear-gradient(145deg,#7A1518,#5c0c10,#A81E23);position:relative;overflow:hidden}
+.sec-testi::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.025) 1px,transparent 1px);background-size:40px 40px}
+.sec-testi .display-h{color:#fff}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem;position:relative;z-index:1}
+.testi-card{background:linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));border:1px solid rgba(255,180,180,0.12);border-radius:var(--radius);padding:2rem;transition:all .3s;backdrop-filter:blur(8px);box-shadow:0 8px 32px rgba(0,0,0,0.12),inset 0 1px 0 rgba(255,255,255,0.08)}
+.testi-card:hover{background:linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06));border-color:rgba(255,180,180,0.40);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.20),inset 0 1px 0 rgba(255,255,255,0.12)}
+.testi-stars{color:#F59E0B;font-size:.88rem;letter-spacing:.1em;margin-bottom:1rem}
+.testi-quote{font-family:'DM Serif Display',serif;font-style:italic;font-size:1.02rem;color:rgba(255,255,255,0.82);line-height:1.7;margin-bottom:1.4rem}
+.testi-user{display:flex;align-items:center;gap:.75rem}
+.testi-av{width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--grad-blue);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:.65rem;font-weight:800;color:#fff}
+.testi-name{font-size:.86rem;font-weight:700;color:#fff}
+.testi-role{font-size:.72rem;color:rgba(255,255,255,0.42)}
+
+/* ── CTA CARD ── */
+.sec-cta{background:var(--cream);padding-bottom:clamp(60px,8vw,100px)}
+.cta-card{max-width:1280px;margin:0 auto;background:linear-gradient(135deg,#A81E23 0%,#D4262C 35%,#F03E44 65%,#FF5A5F 100%);border-radius:var(--radius-xl);padding:clamp(3rem,6vw,5rem);position:relative;overflow:hidden;text-align:center;box-shadow:0 0 0 1px rgba(255,255,255,0.10),0 40px 100px rgba(168,30,35,0.35)}
+.cta-card::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.05) 1px,transparent 1px);background-size:32px 32px}
+.cta-orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none}
+.cta-orb-1{width:400px;height:400px;top:-100px;left:-100px;background:rgba(255,200,200,0.12)}
+.cta-orb-2{width:300px;height:300px;bottom:-80px;right:-80px;background:rgba(100,0,10,0.18)}
+.cta-card h2{font-family:'Unbounded',sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:800;color:#fff;letter-spacing:-1.5px;margin-bottom:.8rem;position:relative;z-index:1}
+.cta-card p{font-size:1rem;color:rgba(255,255,255,0.72);margin-bottom:2.5rem;position:relative;z-index:1;font-weight:300}
+.cta-btns{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;position:relative;z-index:1}
+
+/* ── INNER PAGE HERO ── */
+.inner-hero{background:linear-gradient(145deg,#A81E23 0%,#D4262C 50%,#F03E44 100%);padding:130px clamp(1.5rem,5vw,4rem) 70px;position:relative;overflow:hidden}
+.inner-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.025) 1px,transparent 1px);background-size:36px 36px}
+.inner-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 18% 50%,rgba(255,255,255,0.10) 0%,transparent 60%),radial-gradient(ellipse 30% 40% at 85% 20%,rgba(255,200,200,0.12) 0%,transparent 50%)}
+.inner-hero-inner{max-width:1280px;margin:0 auto;position:relative;z-index:1}
+.inner-hero .tag{color:var(--sky);margin-bottom:1.2rem}
+.inner-hero .tag::before{background:var(--sky)}
+.inner-hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:800;color:#fff;letter-spacing:-2px;line-height:1.05;margin-bottom:1rem}
+.inner-hero p{font-size:1rem;color:rgba(255,255,255,0.55);max-width:520px;line-height:1.8;font-weight:300}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3rem}
+.about-visual{border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/5;background:linear-gradient(145deg,#FFE0E0,#FFF0F0);display:flex;align-items:center;justify-content:center;position:relative;border:1.5px solid rgba(255,90,95,0.20)}
+.about-visual::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,transparent,rgba(240,62,68,0.05))}
+.about-visual .av-emoji{font-size:8rem;filter:drop-shadow(0 20px 40px rgba(168,30,35,0.25))}
+.about-text .display-h{font-size:clamp(1.6rem,3vw,2.4rem)}
+.about-text p{font-size:.92rem;color:var(--muted);line-height:1.82;margin-bottom:1.1rem;font-weight:300}
+.about-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+.kpi-box{background:#FFFAFA;border-radius:var(--radius-sm);padding:1.2rem;text-align:center;border:1.5px solid rgba(255,90,95,0.20);box-shadow:0 2px 10px rgba(255,90,95,0.07);transition:all .3s cubic-bezier(.22,1,.36,1);cursor:default}
+.kpi-box:hover{transform:translateY(-4px) scale(1.03);border-color:rgba(255,90,95,0.45);box-shadow:0 8px 28px rgba(255,90,95,0.16)}
+.kpi-box .kn{font-family:'Unbounded',sans-serif;font-size:1.5rem;font-weight:800;color:var(--r2);letter-spacing:-1px}
+.kpi-box .kl{font-size:.72rem;color:var(--muted);margin-top:.2rem;font-weight:300}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin-top:3rem}
+.team-card{background:#FFFAFA;border-radius:var(--radius);padding:2rem 1.5rem;text-align:center;border:1.5px solid rgba(255,90,95,0.14);transition:all .3s;box-shadow:0 3px 14px rgba(255,90,95,0.07)}
+.team-card:hover{border-color:rgba(255,90,95,0.38);box-shadow:0 10px 32px rgba(255,90,95,0.13);transform:translateY(-6px)}
+.team-av{width:72px;height:72px;border-radius:50%;background:var(--grad-blue);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:800;color:#fff;margin:0 auto 1.2rem;box-shadow:0 8px 24px var(--b-glow);transition:all .3s cubic-bezier(.22,1,.36,1)}
+.team-card:hover .team-av{box-shadow:0 0 0 4px rgba(255,90,95,0.20),0 12px 32px rgba(255,90,95,0.28);transform:scale(1.08)}
+.team-card h4{font-family:'Unbounded',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:-.3px;margin-bottom:.35rem;color:var(--ink)}
+.team-card .role{font-size:.78rem;color:var(--r2);font-weight:600;margin-bottom:.25rem}
+.team-card .dept{font-size:.72rem;color:var(--muted2);font-weight:300}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:5fr 4fr;gap:3rem;margin-top:3rem}
+.contact-form-card{background:#FFFAFA;border-radius:var(--radius-lg);padding:2.8rem;border:1.5px solid rgba(255,90,95,0.16);box-shadow:0 4px 24px rgba(255,90,95,0.08)}
+.cf-title{font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:-.5px;margin-bottom:2rem;color:var(--ink)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-size:.76rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:.8rem 1.1rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;color:var(--ink);background:var(--surface2);outline:none;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--b);box-shadow:0 0 0 3px var(--b-soft2)}
+.form-group textarea{min-height:120px;resize:vertical}
+.contact-sidebar{display:flex;flex-direction:column;gap:1.2rem}
+.ci-card{background:#FFFAFA;border:1.5px solid rgba(255,90,95,0.14);border-left:3px solid var(--r2);border-radius:var(--radius);padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:all .3s;box-shadow:0 3px 12px rgba(255,90,95,0.06)}
+.ci-card:hover{border-color:rgba(255,90,95,0.38);border-left-color:var(--r);box-shadow:0 10px 30px rgba(255,90,95,0.12)}
+.ci-ico{width:44px;height:44px;border-radius:12px;flex-shrink:0;background:var(--grad-blue);display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 12px var(--b-glow)}
+.ci-txt h4{font-size:.86rem;font-weight:700;color:var(--ink);margin-bottom:.3rem}
+.ci-txt p{font-size:.82rem;color:var(--muted);line-height:1.6;font-weight:300}
+
+/* ── DOWNLOAD ── */
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:3rem}
+.dl-card{background:#FFFAFA;border-radius:var(--radius-lg);padding:3rem;text-align:center;border:1.5px solid rgba(255,90,95,0.16);transition:all .4s;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(255,90,95,0.08)}
+.dl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--r4),var(--r2),var(--r),var(--sky),var(--r),var(--r2));background-size:200% 100%;animation:shimmerBar 3s linear infinite}
+@keyframes shimmerBar{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.dl-card:hover{border-color:rgba(255,90,95,0.40);box-shadow:0 16px 48px rgba(255,90,95,0.15);transform:translateY(-8px)}
+.dl-ico{font-size:4rem;margin-bottom:1.4rem;display:block}
+.dl-card h3{font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:-.5px;margin-bottom:.7rem;color:var(--ink)}
+.dl-card p{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:2rem;font-weight:300}
+.dl-qr-placeholder{width:110px;height:110px;border-radius:16px;background:var(--b-soft);margin:0 auto 2rem;display:flex;align-items:center;justify-content:center;font-size:2.8rem;border:1.5px solid var(--border)}
+
+/* ── WHY ISKODASH SECTION ── */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem}
+.why-item{display:flex;align-items:flex-start;gap:.8rem;background:#FFFAFA;border:1.5px solid rgba(255,90,95,0.14);border-radius:var(--radius-sm);padding:1.2rem;transition:all .3s}
+.why-item:hover{border-color:rgba(255,90,95,0.38);transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,90,95,0.12)}
+.why-dot{width:28px;height:28px;border-radius:50%;background:var(--grad-red);display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;box-shadow:0 4px 10px var(--r-glow)}
+.why-text{font-size:.82rem;color:var(--ink);font-weight:500;line-height:1.5}
+
+/* ── RIDERS / VENDORS ── */
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:4rem}
+.req-box{background:#FFFAFA;border:1.5px solid rgba(255,90,95,0.18);border-top:3px solid var(--r2);border-radius:var(--radius);padding:1.8rem;margin-top:1.5rem;box-shadow:0 3px 14px rgba(255,90,95,0.07)}
+.req-box h4{font-family:'Unbounded',sans-serif;font-size:.82rem;font-weight:700;color:var(--r2);margin-bottom:1rem}
+.req-list{display:flex;flex-direction:column;gap:.6rem}
+.req-item{display:flex;align-items:center;gap:.7rem;font-size:.87rem;color:var(--ink);font-weight:400}
+.req-check{width:20px;height:20px;border-radius:6px;background:var(--grad-blue);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;flex-shrink:0}
+.earn-card{background:linear-gradient(145deg,#A81E23,#D4262C,#F03E44);border-radius:var(--radius-lg);padding:2.5rem;position:relative;overflow:hidden}
+.earn-card::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px);background-size:28px 28px}
+.earn-card h3{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:800;color:rgba(255,255,255,0.75);margin-bottom:1rem;letter-spacing:-.3px;position:relative;z-index:1}
+.earn-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.08);border-radius:var(--radius-sm);overflow:hidden;position:relative;z-index:1}
+.earn-stat{background:rgba(255,255,255,0.06);padding:1.4rem}
+.earn-stat .en{font-family:'Unbounded',sans-serif;font-size:1.6rem;font-weight:800;color:var(--sky);letter-spacing:-1px;transition:transform .2s;display:inline-block}
+.earn-stat:hover .en{transform:scale(1.08)}
+.earn-stat .el{font-size:.72rem;color:rgba(255,255,255,0.48);margin-top:.25rem;font-weight:300}
+.earn-card.red-earn{background:linear-gradient(145deg,var(--r4),var(--r3),var(--r2))}
+.earn-card.red-earn .en{color:#FCA5A5}
+
+/* ── DELIVERY FEES SECTION ── */
+.fees-banner{background:linear-gradient(135deg,var(--b4),var(--b3));border-radius:var(--radius);padding:2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-top:2rem}
+.fees-left .fees-label{font-size:.7rem;color:rgba(255,255,255,0.6);font-family:'Unbounded',sans-serif;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.fees-price{font-family:'Unbounded',sans-serif;font-size:2.5rem;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1}
+.fees-price span{font-size:.8rem;font-weight:400;color:rgba(255,255,255,0.6);margin-left:.3rem}
+.fees-checks{display:flex;flex-direction:column;gap:.5rem;margin-top:1rem}
+.fees-check{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:rgba(255,255,255,0.85)}
+.fees-check-icon{color:var(--sky);font-size:.75rem}
+.fees-right{font-size:3rem;flex-shrink:0}
+
+/* ── SERVICES PAGE ── */
+.services-full-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.service-full-card{background:#FFFAFA;border-radius:var(--radius-lg);padding:2.2rem;border:1.5px solid rgba(255,90,95,0.15);transition:all .3s;cursor:pointer;box-shadow:0 3px 16px rgba(255,90,95,0.07);border-left:4px solid transparent}
+.service-full-card:hover{border-color:rgba(255,90,95,0.40);border-left-color:var(--r2);transform:translateY(-6px) translateX(4px);box-shadow:0 12px 36px rgba(255,90,95,0.14)}
+.service-full-card .sf-icon{font-size:2.4rem;margin-bottom:1rem}
+.service-full-card h3{font-family:'Unbounded',sans-serif;font-size:.9rem;font-weight:800;letter-spacing:-.3px;color:var(--ink);margin-bottom:.6rem}
+.service-full-card p{font-size:.85rem;color:var(--muted);line-height:1.7;font-weight:300}
+.service-full-card .sf-price{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,90,95,0.08);border:1px solid rgba(255,90,95,0.20);border-radius:50px;padding:.25rem .8rem;font-size:.68rem;font-weight:700;color:var(--r2);margin-top:1rem;font-family:'Unbounded',sans-serif}
+
+/* ── GRADIENT DIVIDERS ── */
+.grad-divider{height:3px;background:linear-gradient(90deg,var(--b4),var(--b),var(--sky),var(--b),var(--r),var(--r2));opacity:.5}
+
+/* ── DASHBOARD ── */
+.dashboard-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 72px);background:#F5F0E8}
+.db-sidebar{background:#6B1013;padding:2rem 0;display:flex;flex-direction:column;gap:.25rem;position:sticky;top:72px;height:calc(100vh - 72px);overflow-y:auto}
+.db-sidebar-logo{display:flex;align-items:center;gap:.75rem;padding:0 1.5rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.10);margin-bottom:.75rem}
+.db-sidebar-logo .logo-mark{width:34px;height:34px;border-radius:9px;background:var(--grad-red);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:.6rem;font-weight:800;color:#fff}
+.db-sidebar-logo span{font-family:'Unbounded',sans-serif;font-size:.95rem;font-weight:700;color:#fff}
+.db-sidebar-logo span em{color:#FFB3B5;font-style:normal}
+.db-nav-item{display:flex;align-items:center;gap:.75rem;padding:.72rem 1.5rem;font-size:.84rem;font-weight:500;color:rgba(255,255,255,0.55);cursor:pointer;transition:all .2s;border-left:3px solid transparent;text-decoration:none}
+.db-nav-item:hover{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.90)}
+.db-nav-item.active{background:rgba(255,255,255,0.12);color:#fff;font-weight:700;border-left-color:#FFB3B5}
+.db-nav-item .db-nav-icon{font-size:1rem;width:20px;text-align:center}
+.db-main{padding:2rem 2.5rem;background:#F5F0E8;overflow-y:auto}
+.db-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+.db-topbar h2{font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:800;color:var(--ink);letter-spacing:-.5px}
+.db-topbar p{font-size:.82rem;color:var(--muted);margin-top:.15rem}
+.db-notif-btn{width:38px;height:38px;border-radius:50%;background:#fff;border:1.5px solid rgba(255,90,95,0.18);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;box-shadow:0 2px 8px rgba(255,90,95,0.08)}
+.db-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.db-stat-card{background:#fff;border-radius:16px;padding:1.4rem 1.5rem;border:1.5px solid rgba(255,90,95,0.10);box-shadow:0 2px 12px rgba(255,90,95,0.07);transition:all .3s}
+.db-stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(255,90,95,0.13);border-color:rgba(255,90,95,0.28)}
+.db-stat-card .dsc-label{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.db-stat-card .dsc-value{font-family:'Unbounded',sans-serif;font-size:1.7rem;font-weight:800;color:var(--ink);letter-spacing:-1px;line-height:1;margin-bottom:.3rem}
+.db-stat-card .dsc-sub{font-size:.72rem;color:var(--muted2);font-weight:300}
+.db-stat-card .dsc-sub.green{color:#16a34a;font-weight:600}
+.db-stat-card .dsc-sub.red{color:var(--r2);font-weight:600}
+.db-content-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.2rem}
+.db-card{background:#fff;border-radius:18px;padding:1.5rem;border:1.5px solid rgba(255,90,95,0.10);box-shadow:0 2px 12px rgba(255,90,95,0.06)}
+.db-card-title{font-family:'Unbounded',sans-serif;font-size:.78rem;font-weight:800;color:var(--ink);letter-spacing:-.3px;margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:center}
+.db-card-title a{font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:600;color:var(--r2);text-decoration:none;cursor:pointer}
+.db-meetup-banner{background:linear-gradient(135deg,#7A1518,#D4262C);border-radius:12px;padding:1.2rem 1.3rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.db-meetup-banner::after{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.db-meetup-date{font-family:'Unbounded',sans-serif;font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.2rem}
+.db-meetup-loc{font-size:.78rem;color:rgba(255,255,255,0.75);margin-bottom:.75rem}
+.db-meetup-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem}
+.db-meetup-tag{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.18);border-radius:50px;padding:.22rem .75rem;font-size:.65rem;color:rgba(255,255,255,0.85)}
+.db-meetup-avatars{display:flex;align-items:center;gap:.4rem}
+.db-av{width:28px;height:28px;border-radius:50%;background:var(--grad-red);border:2px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:.48rem;font-weight:800;color:#fff;margin-left:-8px}
+.db-av:first-child{margin-left:0}
+.db-av-label{font-size:.68rem;color:rgba(255,255,255,0.75);margin-left:.4rem}
+.db-meetup-btn{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:.5rem 1rem;font-size:.72rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s;margin-top:.9rem}
+.db-meetup-btn:hover{background:rgba(255,255,255,0.28)}
+.db-chat-list{display:flex;flex-direction:column;gap:.75rem;max-height:220px;overflow-y:auto}
+.db-chat-msg{display:flex;gap:.7rem;align-items:flex-start}
+.db-chat-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#A81E23,#F03E44);display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:800;color:#fff;font-family:'Unbounded',sans-serif;flex-shrink:0}
+.db-chat-bubble{background:#F5F0E8;border-radius:0 10px 10px 10px;padding:.55rem .85rem;flex:1}
+.db-chat-name{font-size:.68rem;font-weight:700;color:var(--ink);margin-bottom:.15rem}
+.db-chat-text{font-size:.75rem;color:var(--muted);line-height:1.5}
+.db-chat-time{font-size:.6rem;color:var(--muted2);flex-shrink:0;margin-top:.2rem}
+.db-chat-input{display:flex;gap:.6rem;margin-top:1rem;align-items:center}
+.db-chat-input input{flex:1;padding:.6rem .9rem;border:1.5px solid rgba(255,90,95,0.15);border-radius:50px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--ink);background:#F5F0E8;outline:none}
+.db-chat-input input:focus{border-color:var(--r2)}
+.db-chat-send{width:34px;height:34px;border-radius:50%;background:var(--grad-red);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;color:#fff;box-shadow:0 4px 12px var(--r-glow)}
+.db-order-list{display:flex;flex-direction:column;gap:.7rem}
+.db-order-item{display:flex;align-items:center;gap:.85rem;padding:.7rem;border-radius:10px;background:#F5F0E8;transition:background .2s}
+.db-order-item:hover{background:rgba(255,90,95,0.06)}
+.db-order-emoji{width:36px;height:36px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;border:1px solid rgba(255,90,95,0.12)}
+.db-order-name{font-size:.82rem;font-weight:700;color:var(--ink)}
+.db-order-sub{font-size:.7rem;color:var(--muted2);font-weight:300}
+.db-order-price{margin-left:auto;font-family:'Unbounded',sans-serif;font-size:.8rem;font-weight:800;color:var(--r2);white-space:nowrap}
+.db-order-time{font-size:.65rem;color:var(--muted2);white-space:nowrap}
+
+/* ── FOOTER ── */
+footer{background:#5c0c10;padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem) 2rem;border-top:1px solid rgba(255,255,255,0.07)}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.footer-brand p{font-size:.84rem;color:rgba(255,255,255,0.40);line-height:1.75;max-width:260px;margin-top:1rem;font-weight:300}
+.footer-brand .nav-logo{margin-bottom:.5rem}
+.footer-brand .logo-text{color:rgba(255,255,255,0.85)}
+.footer-col h5{font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:1.2rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.footer-col ul li a{font-size:.85rem;color:rgba(255,255,255,0.50);text-decoration:none;cursor:pointer;transition:color .2s;font-weight:300}
+.footer-col ul li a:hover{color:var(--sky)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.07);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.78rem;color:rgba(255,255,255,0.28);font-weight:300}
+.footer-socials{display:flex;gap:.6rem}
+.soc-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:rgba(255,255,255,0.48);cursor:pointer;transition:all .2s;text-decoration:none}
+.soc-btn:hover{background:var(--r2);border-color:var(--r2);color:#fff}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:1rem 1.5rem;font-size:.88rem;font-weight:500;box-shadow:0 16px 50px rgba(0,0,0,0.3);transform:translateY(20px);opacity:0;transition:all .35s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;gap:.6rem}
+.toast.show{transform:translateY(0);opacity:1}
+.toast .toast-dot{width:8px;height:8px;border-radius:50%;background:var(--sky);flex-shrink:0;animation:pulseAnim 1s infinite}
+@keyframes pulseAnim{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+.reveal-d1{transition-delay:.08s}
+.reveal-d2{transition-delay:.16s}
+.reveal-d3{transition-delay:.24s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .dashboard-layout{grid-template-columns:1fr}
+  .db-sidebar{position:static;height:auto;flex-direction:row;overflow-x:auto;padding:1rem;gap:.3rem}
+  .db-sidebar-logo{display:none}
+  .db-nav-item{border-left:none;border-bottom:3px solid transparent;padding:.5rem .9rem;white-space:nowrap}
+  .db-nav-item.active{border-bottom-color:#FFB3B5;border-left:none}
+  .db-stats-row{grid-template-columns:repeat(2,1fr)}
+  .db-content-grid{grid-template-columns:1fr}
+  .db-main{padding:1.2rem}
+}
+@media(max-width:1024px){.svc-layout{grid-template-columns:1fr}.svc-sticky{position:static}.how-layout{grid-template-columns:1fr;gap:3rem}.about-grid{grid-template-columns:1fr;gap:2.5rem}.about-visual{aspect-ratio:3/2}.rv-grid{grid-template-columns:1fr;gap:2.5rem}.track-layout{grid-template-columns:1fr;gap:2.5rem}.vendors-grid{grid-template-columns:repeat(3,1fr)}.why-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr}.hero-visual{display:none}.hero-sub{max-width:100%}.aud-grid{grid-template-columns:1fr}.feed-grid{grid-template-columns:1fr 1fr}.testi-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr;gap:2.5rem}.contact-grid{grid-template-columns:1fr}.dl-grid{grid-template-columns:1fr}.nav-links{display:none}.hamburger{display:flex}.ai-grid{grid-template-columns:1fr}.services-full-grid{grid-template-columns:1fr 1fr}.vendors-grid{grid-template-columns:repeat(2,1fr)}.why-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.feed-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.hero-stats{display:none}.form-row{grid-template-columns:1fr}.earn-grid{grid-template-columns:1fr}.cta-card{border-radius:24px}.about-kpi{grid-template-columns:1fr}.services-full-grid{grid-template-columns:1fr}.vendors-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"><span class="toast-dot"></span> Message sent! We'll be in touch soon.</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" onclick="showPage('home')">
+    <div class="logo-mark"><span>ID</span></div>
+    <span class="logo-text">Isko<em>Dash</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('dashboard')" id="nav-dashboard">Dashboard</a></li>
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a onclick="showPage('services')" id="nav-services">Services</a></li>
+    <li><a onclick="showPage('riders')" id="nav-riders">Riders</a></li>
+    <li><a onclick="showPage('vendors')" id="nav-vendors">Vendors</a></li>
+    <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+  </ul>
+  <div class="nav-pill">
+    <a onclick="showPage('download')" class="nav-cta">Download App</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home');closeMobile()" id="mnav-home" class="active">🏠 Home</a>
+  <a onclick="showPage('services');closeMobile()" id="mnav-services">🍱 Services</a>
+  <a onclick="showPage('riders');closeMobile()" id="mnav-riders">🛵 Riders</a>
+  <a onclick="showPage('vendors');closeMobile()" id="mnav-vendors">🏪 Vendors</a>
+  <a onclick="showPage('about');closeMobile()" id="mnav-about">👥 About</a>
+  <a onclick="showPage('contact');closeMobile()" id="mnav-contact">📬 Contact</a>
+  <a onclick="showPage('download');closeMobile()" style="color:var(--r);font-weight:700">📱 Download App</a>
+</div>
+
+<!-- ═══ PAGE: HOME ═══ -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-bg"></div><div class="hero-grain"></div><div class="hero-grid"></div>
+    <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tagline">By PUPians. For PUPians.</div>
+        <div class="hero-eyebrow"><span class="line"></span> PUP Sta. Mesa Campus</div>
+        <h1 class="hero-h1">
+          Mabilis na Pagkain.<br/>
+          <span class="stroke-text">Walang pababang Building.</span>
+        </h1>
+        <p class="hero-sub">Order food from Fewa's Footlong, B1T1 Siomai Rice, Kape Kuripot, Waffle Time, and more — delivered to your building by a fellow Isko. The all-in-one campus delivery app made for PUP students.</p>
+        <div class="hero-actions">
+          <a onclick="showPage('download')" class="btn-hero-primary">Get the App <span class="arrow">→</span></a>
+          <a onclick="showPage('services')" class="btn-hero-ghost">See Services</a>
+        </div>
+        <div class="store-badges">
+          <div class="store-badge" onclick="showPage('download')"><span class="sb-icon">🍎</span><div class="sb-text"><span class="sb-label">Download on the</span><span class="sb-name">App Store</span></div></div>
+          <div class="store-badge" onclick="showPage('download')"><span class="sb-icon">🤖</span><div class="sb-text"><span class="sb-label">Get it on</span><span class="sb-name">Google Play</span></div></div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-pill"><span class="sp-num">₱15</span><span class="sp-label">Flat Rate · No Hidden Fees</span></div>
+          <div class="stat-pill"><span class="sp-num">~20min</span><span class="sp-label">Avg delivery time</span></div>
+          <div class="stat-pill"><span class="sp-num">5</span><span class="sp-label">Campus vendors</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="phone-stage">
+          <div class="phone-glow"></div>
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="ps-header">
+                <div class="ps-top-row">
+                  <div>
+                    <div class="ps-greeting">Good day, Isko! 👋</div>
+                    <div class="ps-greeting"><strong>What are you craving today?</strong></div>
+                  </div>
+                  <div class="ps-notif-btn">🔔</div>
+                </div>
+                <div class="ps-search-bar">🔍 Search food or stalls…</div>
+              </div>
+              <div class="ps-deliver-banner">
+                <div class="ps-deliver-text">WE DELIVER TO YOU! <span>No need to go down. We bring it up.</span></div>
+                <div class="ps-deliver-emoji">🛵</div>
+              </div>
+              <div class="ps-body">
+                <div class="ps-section-label">Popular in PUP Lagoon</div>
+                <div class="ps-lagoon-grid">
+                <div class="ps-vendor-card featured"><div class="pv-emoji">🌭</div><div class="pv-name">Fewas Footlong</div><div class="pv-price">₱89</div><div class="pv-rating">★ 4.8</div></div>
+                <div class="ps-vendor-card"><div class="pv-emoji">🍚</div><div class="pv-name">B1T1 Siomai</div><div class="pv-price">₱60</div><div class="pv-rating">★ 4.7</div></div>
+                <div class="ps-vendor-card"><div class="pv-emoji">🍽️</div><div class="pv-name">Stall #10</div><div class="pv-price">₱75</div><div class="pv-rating">★ 4.6</div></div>
+                <div class="ps-vendor-card"><div class="pv-emoji">☕</div><div class="pv-name">Kape Kuripot</div><div class="pv-price">₱35</div><div class="pv-rating">★ 4.9</div></div>
+                <div class="ps-vendor-card"><div class="pv-emoji">🧇</div><div class="pv-name">Waffle Time</div><div class="pv-price">₱55</div><div class="pv-rating">★ 4.7</div></div>
+                </div>
+                <div class="ps-ai-box">
+                  <div class="ps-ai-badge">AI</div>
+                  <div class="ps-ai-text"><strong>Suggested Meetup:</strong> Today, 11:30 AM · Near PUP Lagoon<br/><span style="font-size:.5rem;opacity:.8">Light rain expected · Most of you are free · Less crowd</span></div>
+                </div>
+              </div>
+              <div class="ps-bottom">
+                <div class="ps-tab act"><div class="ps-tab-icon">🏠</div>Home</div>
+                <div class="ps-tab"><div class="ps-tab-icon">📋</div>Orders</div>
+                <div class="ps-tab"><div class="ps-tab-icon">➕</div>New</div>
+                <div class="ps-tab"><div class="ps-tab-icon">👥</div>Groups</div>
+                <div class="ps-tab"><div class="ps-tab-icon">👤</div>Profile</div>
+              </div>
+            </div>
+          </div>
+          <div class="float-card fc1"><div class="fc-icon">📍</div><div><div class="fc-title">Live Check-In</div><div class="fc-sub">Indoors · 4th Floor – Room 410</div></div></div>
+          <div class="float-card fc2"><div class="fc-icon">✅</div><div><div class="fc-title">Order Delivered!</div><div class="fc-sub">Rate your experience</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-bar">
+    <div class="tb-item"><span class="tb-dot"></span>100% Student-Built</div>
+    <div class="tb-item"><span class="tb-dot"></span>PUP Sta. Mesa Campus</div>
+    <div class="tb-item"><span class="tb-dot"></span>₱15 Flat Delivery</div>
+    <div class="tb-item"><span class="tb-dot"></span>AI Powered Meetups</div>
+    <div class="tb-item"><span class="tb-dot"></span>Real-Time Tracking</div>
+    <div class="tb-item"><span class="tb-dot"></span>No Hidden Fees</div>
+  </div>
+  <div class="grad-divider"></div>
+
+  <!-- CAMPUS VENDORS -->
+  <section class="sec sec-vendors">
+    <div class="sec-inner">
+      <div class="vendors-intro reveal">
+        <div class="tag" style="justify-content:center">Your Favorite Lagoon Foods</div>
+        <h2 class="display-h" style="text-align:center">All your PUP faves,<br/><span class="it">delivered</span></h2>
+        <p class="body-lg" style="text-align:center;max-width:500px;margin:0 auto">From Fewa's classic footlong to Kape Kuripot's iced coffee — every stall in the Lagoon, now at your fingertips.</p>
+      </div>
+      <div class="vendors-grid">
+        <div class="vendor-card reveal bestseller" onclick="showPage('services')"><span class="vc-emoji">🌭</span><h3>Fewa's Footlong</h3><div class="vc-type">Footlong Sandwich</div><div class="vc-price">Starting at ₱89</div><div class="vc-rating">★★★★★ 4.8</div></div>
+        <div class="vendor-card reveal reveal-d1" onclick="showPage('services')"><span class="vc-emoji">🍚</span><h3>B1T1 Siomai Rice</h3><div class="vc-type">Siomai with Rice</div><div class="vc-price">Starting at ₱60</div><div class="vc-rating">★★★★★ 4.7</div></div>
+        <div class="vendor-card reveal reveal-d2" onclick="showPage('services')"><span class="vc-emoji">🍽️</span><h3>Stall #10</h3><div class="vc-type">Best Seller</div><div class="vc-price">Starting at ₱75</div><div class="vc-rating">★★★★½ 4.6</div></div>
+        <div class="vendor-card reveal reveal-d3" onclick="showPage('services')"><span class="vc-emoji">☕</span><h3>Kape Kuripot</h3><div class="vc-type">Iced Coffee</div><div class="vc-price">Starting at ₱35</div><div class="vc-rating">★★★★★ 4.9</div></div>
+        <div class="vendor-card reveal reveal-d3" onclick="showPage('services')"><span class="vc-emoji">🧇</span><h3>Waffle Time</h3><div class="vc-type">Classic Waffle</div><div class="vc-price">Starting at ₱55</div><div class="vc-rating">★★★★½ 4.7</div></div>
+      </div>
+      <div style="text-align:center;margin-top:1rem">
+        <a onclick="showPage('services')" class="btn-blue">View All Menu Items →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI FEATURES -->
+  <section class="sec sec-ai">
+    <div class="sec-inner">
+      <div style="text-align:center" class="reveal">
+        <div class="tag" style="justify-content:center">AI Powered</div>
+        <h2 class="display-h" style="text-align:center">Smart features for <span class="it">campus life</span></h2>
+        <p class="body-lg" style="text-align:center;margin:0 auto .5rem">Powered by intelligent systems designed around PUP's unique environment.</p>
+      </div>
+      <div class="ai-grid">
+        <div class="ai-card reveal"><div class="ai-badge">AI</div><h3>AI Suggested Meetups</h3><p>Our AI suggests the best meetup time and place based on weather, schedule, and your group's availability. No more "saan tayo mag-meet?"</p></div>
+        <div class="ai-card reveal reveal-d1"><div class="ai-badge">LIVE</div><h3>Real-Time Arrival Check-Ins</h3><p>Rider and customer check in based on live location and weather conditions. Know exactly when your food arrives at your building.</p></div>
+        <div class="ai-card reveal reveal-d2"><div class="ai-badge">GROUP</div><h3>Group Spaces & Orders</h3><p>Create groups, order together, and verify in seconds. Split the bill effortlessly among barkada — no more chasing people for payment.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="sec sec-how">
+    <div class="sec-inner">
+      <div style="text-align:center;margin-bottom:0">
+        <div class="tag reveal" style="justify-content:center;color:var(--sky)">How It Works</div>
+        <h2 class="display-h reveal" style="color:#fff;text-align:center">Order in <span class="it" style="color:rgba(255,255,255,0.45)">three steps</span></h2>
+      </div>
+      <div class="how-layout">
+        <div class="steps reveal">
+          <div class="step-item"><div class="step-num">01</div><div class="step-text"><h4>Browse & Choose</h4><p>Browse your favorite Lagoon stalls or scroll through your campus feed. Fewa's Footlong, B1T1 Siomai, Kape Kuripot — all at your fingertips.</p></div></div>
+          <div class="step-item"><div class="step-num">02</div><div class="step-text"><h4>Place Your Order</h4><p>Add to cart and pay via Cash on Delivery, GCash, or Maya. Your order is broadcast to nearby student riders immediately.</p></div></div>
+          <div class="step-item"><div class="step-num">03</div><div class="step-text"><h4>Track & Receive</h4><p>Watch your rider on a live campus map. Get real-time check-in updates and weather alerts until your food arrives at your building.</p></div></div>
+        </div>
+        <div class="stats-grid reveal">
+          <div class="stat-block"><div class="sb-num">782</div><div class="sb-label">Deliveries needed to break even in 2026</div></div>
+          <div class="stat-block"><div class="sb-num">35%</div><div class="sb-label">Safety margin above break-even</div></div>
+          <div class="stat-block"><div class="sb-num">₱15</div><div class="sb-label">Flat delivery fee — campus wide</div></div>
+          <div class="stat-block"><div class="sb-num">~20</div><div class="sb-label">Minutes average delivery time</div></div>
+          <div class="stat-block wide"><div class="sb-num" style="font-size:1.1rem;letter-spacing:-.5px">Student-Powered Economy</div><div class="sb-label">Riders earn per delivery, on their own flexible schedule — no boss, no fixed hours. Be a micro-entrepreneur!</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REAL-TIME TRACKING -->
+  <section class="sec sec-track">
+    <div class="sec-inner">
+      <div class="tag reveal">Track Your Order</div>
+      <h2 class="display-h reveal">Live tracking, <span class="it">every step</span></h2>
+      <div class="track-layout">
+        <div class="track-phone reveal">
+          <div class="track-screen">
+            <div class="track-header">
+              <div class="track-back">←</div>
+              <div class="track-title">Track Your Order</div>
+              <div class="track-eta-badge">
+                <div class="track-eta-num">12 min</div>
+                <span class="track-eta-label">Est. arrival</span>
+              </div>
+            </div>
+            <div class="track-map">
+              <div class="track-map-grid"></div>
+              <div class="track-path"></div>
+              <div class="track-path-active"></div>
+              <div class="track-rider-dot"></div>
+              <div class="track-dest">📍 Your Building</div>
+              <div class="track-arriving">Arriving in your Building 🏢</div>
+            </div>
+            <div class="track-body">
+              <div class="track-status-row"><div class="track-status-dot"></div><div class="track-status-text">Rider is on the way!</div></div>
+              <div class="track-checkin">
+                <div class="track-ci-label">LIVE CHECK-IN</div>
+                <div class="track-ci-loc">Indoors · 4th Floor – Room 410</div>
+                <div style="font-size:.52rem;color:rgba(255,255,255,0.65);margin-top:2px">Checked in = 9:41 AM ✅</div>
+              </div>
+              <div class="track-weather">
+                <div style="font-size:1.5rem">🌧️</div>
+                <div>
+                  <div class="tw-temp">26°C</div>
+                  <div class="tw-desc">Light Rain · Stay dry!<br/>Your rider is almost there.</div>
+                </div>
+              </div>
+              <div class="track-msg-btn">💬 Message Rider</div>
+            </div>
+          </div>
+        </div>
+        <div class="track-features reveal reveal-d1">
+          <div class="track-feat"><div class="tf-icon">📍</div><div><div class="tf-title">Live Campus Map</div><div class="tf-desc">Watch your rider move in real time on an interactive PUP campus map — no more guessing where they are.</div></div></div>
+          <div class="track-feat"><div class="tf-icon">🌤️</div><div><div class="tf-title">Weather-Aware Delivery</div><div class="tf-desc">Real-time weather integration means riders and customers get weather alerts so everyone stays safe, rain or shine.</div></div></div>
+          <div class="track-feat"><div class="tf-icon">📲</div><div><div class="tf-title">Push Notifications</div><div class="tf-desc">Get notified at every stage: order confirmed, rider assigned, rider arrived at store, and food on the way to you.</div></div></div>
+          <div class="track-feat"><div class="tf-icon">💬</div><div><div class="tf-title">In-App Messaging</div><div class="tf-desc">Chat directly with your rider for special instructions, gate access info, or exact floor location — no number needed.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIENCE -->
+  <section class="sec sec-audience">
+    <div class="sec-inner">
+      <div style="text-align:center" class="reveal">
+        <div class="tag" style="justify-content:center">Join IskoDash</div>
+        <h2 class="display-h" style="text-align:center">Built for the whole <span class="it">PUP community</span></h2>
+      </div>
+      <div class="aud-grid">
+        <div class="aud-card riders reveal">
+          <div class="aud-badge">🛵 For Riders</div>
+          <h3>Earn While<br/>You Study</h3>
+          <p>Deliver orders between classes on your own schedule. No boss, no fixed shifts — just pick up your phone and earn.</p>
+          <div class="aud-perks">
+            <div class="aud-perk"><div class="aud-check">✓</div>Earn per completed delivery</div>
+            <div class="aud-perk"><div class="aud-check">✓</div>100% flexible hours</div>
+            <div class="aud-perk"><div class="aud-check">✓</div>Daily GCash/Maya payouts</div>
+            <div class="aud-perk"><div class="aud-check">✓</div>Campus-only short distances</div>
+          </div>
+          <a onclick="showPage('riders')" class="btn-white">Become a Rider →</a>
+        </div>
+        <div class="aud-card vendors reveal reveal-d1">
+          <div class="aud-badge">🏪 For Vendors</div>
+          <h3>Grow Your<br/>Campus Store</h3>
+          <p>Reach the entire PUP student market with lower commissions than GrabFood and Foodpanda — and a merchant dashboard built for Lagoon vendors.</p>
+          <div class="aud-perks">
+            <div class="aud-perk"><div class="aud-check">✓</div>Lower commission than mainstream apps</div>
+            <div class="aud-perk"><div class="aud-check">✓</div>Onboard in 24 hours</div>
+            <div class="aud-perk"><div class="aud-check">✓</div>Real-time order dashboard</div>
+            <div class="aud-perk"><div class="aud-check">✓</div>Reduce queue congestion</div>
+          </div>
+          <a onclick="showPage('vendors')" class="btn-white">Partner with Us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL FEED -->
+  <section class="sec sec-feed">
+    <div class="sec-inner">
+      <div class="reveal">
+        <div class="tag">IskoDash Social</div>
+        <h2 class="display-h">Discover food through your <span class="it">campus feed</span></h2>
+        <p class="body-lg">Share your meals, see what's trending, and tap any post to reorder from the same Lagoon stall instantly.</p>
+      </div>
+      <div class="feed-grid" style="margin-top:2.5rem">
+        <div class="feed-card reveal"><div class="feed-img f1">🌭</div><div class="feed-body"><div class="feed-user"><div class="feed-av">JA</div><div><div class="feed-uname">@jiro.agad</div><div class="feed-store">📍 PUP Lagoon – Fewa's Footlong</div></div></div><p class="feed-cap">Sulit na sulit yung footlong dito! Perfect break meal 🌭 Delivered in 12 mins sa 4th floor! IskoDash grabe!</p><div class="feed-acts"><div class="feed-act like-btn" data-count="42">❤️ 42</div><div class="feed-act">💬 8</div><div class="feed-act">📤 Share</div></div></div></div>
+        <div class="feed-card reveal reveal-d1"><div class="feed-img f2">☕</div><div class="feed-body"><div class="feed-user"><div class="feed-av" style="background:var(--grad-blue)">KD</div><div><div class="feed-uname">@kyle.delrosario</div><div class="feed-store">📍 PUP Lagoon – Kape Kuripot</div></div></div><p class="feed-cap">Iced coffee for ₱35 lang, delivered to the lib! 😱☕ No need to go down! IskoDash talaga ang pinaka!</p><div class="feed-acts"><div class="feed-act like-btn" data-count="67">❤️ 67</div><div class="feed-act">💬 14</div><div class="feed-act">📤 Share</div></div></div></div>
+        <div class="feed-card reveal reveal-d2"><div class="feed-img f3">🍚</div><div class="feed-body"><div class="feed-user"><div class="feed-av">ZV</div><div><div class="feed-uname">@zedrick.vicente</div><div class="feed-store">📍 PUP Lagoon – B1T1 Siomai Rice</div></div></div><p class="feed-cap">B1T1 Siomai Rice + Waffle combo? Absolute steal at ₱115! Ordered twice na this week 🔥 IskoDash forever!</p><div class="feed-acts"><div class="feed-act like-btn" data-count="88">❤️ 88</div><div class="feed-act">💬 21</div><div class="feed-act">📤 Share</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="sec sec-testi">
+    <div class="sec-inner">
+      <div style="text-align:center" class="reveal">
+        <div class="tag" style="justify-content:center;color:var(--sky)">Testimonials</div>
+        <h2 class="display-h" style="color:#fff;text-align:center">Loved by the <span class="it" style="color:rgba(255,255,255,0.40)">PUP community</span></h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card reveal"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Finally an app that gets campus life. No more running to the Lagoon between classes. IskoDash is a lifesaver for busy PUPians."</p><div class="testi-user"><div class="testi-av">MR</div><div><div class="testi-name">Maria Reyes</div><div class="testi-role">BSIT 3-2, PUP Sta. Mesa</div></div></div></div>
+        <div class="testi-card reveal reveal-d1"><div class="testi-stars">★★★★★</div><p class="testi-quote">"As a vendor, IskoDash helped me reach more students. Orders came in even during rush hour without long lines at my stall."</p><div class="testi-user"><div class="testi-av">LB</div><div><div class="testi-name">Liza Buenaventura</div><div class="testi-role">Kape Kuripot Vendor, PUP Lagoon</div></div></div></div>
+        <div class="testi-card reveal reveal-d2"><div class="testi-stars">★★★★★</div><p class="testi-quote">"Earning ₱200–300 extra on school days just delivering between free periods. The flexible model is perfect for students like me."</p><div class="testi-user"><div class="testi-av">TP</div><div><div class="testi-name">Tristan Palma</div><div class="testi-role">Student Rider, BSIT 4-5</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-cta">
+    <div class="sec-inner">
+      <div class="cta-card reveal">
+        <div class="cta-orb cta-orb-1"></div><div class="cta-orb cta-orb-2"></div>
+        <h2>Mabilis. Affordable.<br/>At para sa ating PUP Community.</h2>
+        <p>Join PUP students already using IskoDash to order, earn, and connect on campus. By PUPians, For PUPians.</p>
+        <div class="cta-btns">
+          <a onclick="showPage('download')" class="btn-w-solid">Download for iOS</a>
+          <a onclick="showPage('download')" class="btn-w-solid">Download for Android</a>
+          <a onclick="showPage('vendors')" class="btn-white">Partner with Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ PAGE: SERVICES ═══ -->
+<div class="page" id="page-services">
+  <div class="inner-hero">
+    <div class="inner-hero-inner">
+      <div class="tag">Our Services</div>
+      <h1>Everything on Campus,<br/>Delivered to You</h1>
+      <p>From Fewa's Footlong to Waffle Time — all your PUP Lagoon favorites delivered within 20 minutes. Plus campus supplies, group orders, and a social food feed.</p>
+    </div>
+  </div>
+  <section class="sec" style="background:var(--cream)">
+    <div class="sec-inner">
+      <div class="tag reveal">Core Services</div>
+      <h2 class="display-h reveal">What IskoDash <span class="it">delivers</span></h2>
+      <div class="services-full-grid">
+        <div class="service-full-card reveal"><div class="sf-icon">🍱</div><h3>IskoDash Food</h3><p>Hot meals from Fewa's Footlong, B1T1 Siomai Rice, Stall #10, Kape Kuripot, Waffle Time, and all PUP Lagoon vendors — delivered to your building.</p><div class="sf-price">₱15 Flat Delivery</div></div>
+        <div class="service-full-card reveal reveal-d1"><div class="sf-icon">📦</div><h3>IskoDash Mart</h3><p>School supplies, snacks, and campus essentials without leaving your study session or classroom.</p><div class="sf-price">₱15 Flat Delivery</div></div>
+        <div class="service-full-card reveal reveal-d2"><div class="sf-icon">👥</div><h3>Group Spaces</h3><p>Create groups, order together, split the bill and verify in seconds. Perfect for barkada orders between classes.</p><div class="sf-price">Free Feature</div></div>
+        <div class="service-full-card reveal"><div class="sf-icon">🤖</div><h3>AI Suggested Meetups</h3><p>Our AI suggests the best meetup time and place based on your schedule, weather, and group availability.</p><div class="sf-price">Free Feature</div></div>
+        <div class="service-full-card reveal reveal-d1"><div class="sf-icon">📍</div><h3>Live Order Tracking</h3><p>Real-time campus map tracking with weather-aware check-ins. Watch your rider from the Lagoon to your floor.</p><div class="sf-price">Free Feature</div></div>
+        <div class="service-full-card reveal reveal-d2"><div class="sf-icon">💬</div><h3>Campus Social Feed</h3><p>Discover trending food through posts from fellow Iskos. Like, comment, and reorder from any vendor with one tap.</p><div class="sf-price">Free Feature</div></div>
+      </div>
+
+      <!-- DELIVERY FEES SECTION — from infographic -->
+      <div style="margin-top:3rem">
+        <div class="tag reveal">Delivery Fees That Make Sense</div>
+        <h2 class="display-h reveal">Lower fees, <span class="it">real convenience</span></h2>
+        <p class="body-lg reveal">We deliver to your building so you can focus on what really matters.</p>
+        <div class="fees-banner reveal">
+          <div class="fees-left">
+            <div class="fees-label">Delivery Fee (PUP Lagoon)</div>
+            <div class="fees-price">₱15 <span>Flat Rate</span></div>
+            <div class="fees-checks">
+              <div class="fees-check"><span class="fees-check-icon">✓</span> No hidden fees</div>
+              <div class="fees-check"><span class="fees-check-icon">✓</span> Campus only</div>
+              <div class="fees-check"><span class="fees-check-icon">✓</span> Fast & reliable</div>
+            </div>
+          </div>
+          <div class="fees-right">🛵</div>
+          <div style="background:rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:1.2rem 1.5rem;border:1px solid rgba(255,255,255,0.18)">
+            <div style="font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:800;color:rgba(255,255,255,0.7);letter-spacing:.08em;margin-bottom:.5rem">CONVENIENCE OVER HASSLE!</div>
+            <div style="font-size:.82rem;color:rgba(255,255,255,0.85);line-height:1.6">No need to go down. We deliver up.<br/>Smart meetups. AI powered.<br/>Affordable, fast, and convenient.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:3rem;text-align:center">
+        <div class="tag reveal" style="justify-content:center">PUP Lagoon Partners</div>
+        <h2 class="display-h reveal" style="text-align:center">Our Campus <span class="it">Vendor Partners</span></h2>
+        <div class="vendors-grid" style="margin-top:2rem">
+          <div class="vendor-card reveal bestseller"><span class="vc-emoji">🌭</span><h3>Fewa's Footlong</h3><div class="vc-type">Footlong Sandwich</div><div class="vc-price">₱89 | ★★★★★ 4.8</div></div>
+          <div class="vendor-card reveal"><span class="vc-emoji">🍚</span><h3>B1T1 Siomai Rice</h3><div class="vc-type">Siomai with Rice</div><div class="vc-price">₱60 | ★★★★★ 4.7</div></div>
+          <div class="vendor-card reveal"><span class="vc-emoji">🍽️</span><h3>Stall #10</h3><div class="vc-type">Best Seller</div><div class="vc-price">₱75 | ★★★★½ 4.6</div></div>
+          <div class="vendor-card reveal"><span class="vc-emoji">☕</span><h3>Kape Kuripot</h3><div class="vc-type">Iced Coffee</div><div class="vc-price">₱35 | ★★★★★ 4.9</div></div>
+          <div class="vendor-card reveal"><span class="vc-emoji">🧇</span><h3>Waffle Time</h3><div class="vc-type">Classic Waffle</div><div class="vc-price">₱55 | ★★★★½ 4.7</div></div>
+        </div>
+      </div>
+
+      <!-- WHY ISKODASH — from infographic -->
+      <div style="margin-top:4rem">
+        <div class="tag reveal" style="justify-content:center;text-align:center">Why IskoDash?</div>
+        <h2 class="display-h reveal" style="text-align:center">IskoDash isn't just an app.<br/><span class="it">It's a PUP culture.</span></h2>
+        <div class="why-grid">
+          <div class="why-item reveal"><div class="why-dot">🎓</div><div class="why-text">Built for PUP students</div></div>
+          <div class="why-item reveal reveal-d1"><div class="why-dot">🏪</div><div class="why-text">Support local lagoon vendors</div></div>
+          <div class="why-item reveal reveal-d2"><div class="why-dot">🛵</div><div class="why-text">No need to go down. We deliver up.</div></div>
+          <div class="why-item reveal"><div class="why-dot">🤖</div><div class="why-text">Smart meetups. AI powered.</div></div>
+          <div class="why-item reveal reveal-d1"><div class="why-dot">📍</div><div class="why-text">Real-time updates you can trust.</div></div>
+          <div class="why-item reveal reveal-d2"><div class="why-dot">💰</div><div class="why-text">Affordable, fast, and convenient.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sec sec-cta" style="padding-top:0"><div class="sec-inner"><div class="cta-card reveal"><div class="cta-orb cta-orb-1"></div><div class="cta-orb cta-orb-2"></div><h2>Ready to order smarter?</h2><p>Download IskoDash and get your first order delivered in minutes.</p><div class="cta-btns"><a onclick="showPage('download')" class="btn-w-solid">Download App</a><a onclick="showPage('vendors')" class="btn-white">Become a Vendor Partner</a></div></div></div></section>
+</div>
+
+<!-- ═══ PAGE: RIDERS ═══ -->
+<div class="page" id="page-riders">
+  <div class="inner-hero"><div class="inner-hero-inner"><div class="tag">For Riders</div><h1>Earn While<br/>You Study</h1><p>Deliver orders between classes on your own schedule — walking or biking within campus. No boss, no fixed shifts, daily payouts.</p></div></div>
+  <section class="sec" style="background:var(--cream)"><div class="sec-inner"><div class="rv-grid">
+    <div>
+      <div class="tag reveal">How to Earn</div>
+      <h2 class="display-h reveal" style="font-size:clamp(1.6rem,3vw,2.4rem)">Your flexible <span class="it">sideline</span></h2>
+      <p class="body-lg reveal">Pick up orders from Lagoon vendors and deliver them to classrooms and buildings within campus. Earn per delivery, cash out daily via GCash or Maya.</p>
+      <div class="req-box reveal">
+        <h4>Requirements to Sign Up</h4>
+        <div class="req-list">
+          <div class="req-item"><div class="req-check">✓</div>Active PUP student (any course)</div>
+          <div class="req-item"><div class="req-check">✓</div>Valid PUP Student ID</div>
+          <div class="req-item"><div class="req-check">✓</div>Smartphone (Android 10+ or iOS 14+)</div>
+          <div class="req-item"><div class="req-check">✓</div>GCash or Maya account</div>
+          <div class="req-item"><div class="req-check">✓</div>Bicycle or on-foot delivery only</div>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem"><a onclick="showPage('download')" class="btn-red">Sign Up as Rider →</a></div>
+    </div>
+    <div>
+      <div class="earn-card red-earn reveal">
+        <h3>Rider Earnings Potential</h3>
+        <div class="earn-grid">
+          <div class="earn-stat"><div class="en">₱15–25</div><div class="el">Earning per delivery</div></div>
+          <div class="earn-stat"><div class="en">8–15</div><div class="el">Deliveries per day (peak)</div></div>
+          <div class="earn-stat"><div class="en">₱200+</div><div class="el">Estimated daily earnings</div></div>
+          <div class="earn-stat"><div class="en">Daily</div><div class="el">GCash/Maya cashout</div></div>
+        </div>
+      </div>
+      <div class="svc-card reveal" style="margin-top:1.2rem"><div class="svc-icon-wrap">🚲</div><h3>Walk or Bike Only</h3><p>IskoDash is designed for the PUP campus environment — short distances, simple logistics. No motorcycle required. Just your legs or a bike and your phone!</p></div>
+    </div>
+  </div></div></section>
+</div>
+
+<!-- ═══ PAGE: VENDORS ═══ -->
+<div class="page" id="page-vendors">
+  <div class="inner-hero"><div class="inner-hero-inner"><div class="tag">For Vendors</div><h1>Grow Your<br/>Campus Store</h1><p>Partner with IskoDash and reach the entire PUP student body — with lower commissions than GrabFood and a dashboard designed for Lagoon vendors.</p></div></div>
+  <section class="sec" style="background:var(--cream)"><div class="sec-inner"><div class="rv-grid">
+    <div>
+      <div class="tag reveal">Why Partner with Us</div>
+      <h2 class="display-h reveal" style="font-size:clamp(1.6rem,3vw,2.4rem)">More orders, <span class="it">less hassle</span></h2>
+      <p class="body-lg reveal">IskoDash sends you digital orders directly so you can reduce long queues at your stall, manage incoming orders efficiently, and reach students who can't physically visit the Lagoon.</p>
+      <div class="req-box reveal">
+        <h4>Vendor Requirements</h4>
+        <div class="req-list">
+          <div class="req-item"><div class="req-check">✓</div>PUP campus-based food stall or vendor</div>
+          <div class="req-item"><div class="req-check">✓</div>Smartphone for order notifications</div>
+          <div class="req-item"><div class="req-check">✓</div>GCash or Maya for payouts</div>
+          <div class="req-item"><div class="req-check">✓</div>Onboard in as fast as 24 hours</div>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem"><a onclick="showPage('contact')" class="btn-blue">Apply as Vendor Partner →</a></div>
+    </div>
+    <div>
+      <div class="earn-card reveal">
+        <h3>Vendor Benefits</h3>
+        <div class="earn-grid">
+          <div class="earn-stat"><div class="en">Lower</div><div class="el">Commission vs GrabFood & Foodpanda</div></div>
+          <div class="earn-stat"><div class="en">24hrs</div><div class="el">Onboarding time</div></div>
+          <div class="earn-stat"><div class="en">Live</div><div class="el">Real-time order dashboard</div></div>
+          <div class="earn-stat"><div class="en">More</div><div class="el">Students reached without walk-ins</div></div>
+        </div>
+      </div>
+      <div style="margin-top:1.2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="svc-card reveal"><div class="svc-icon-wrap">📊</div><h3>Vendor Dashboard</h3><p>View orders, manage menu items, and track sales all from your phone.</p></div>
+        <div class="svc-card reveal"><div class="svc-icon-wrap">📣</div><h3>In-App Promos</h3><p>Run promotional offers to get featured at the top of student searches.</p></div>
+      </div>
+    </div>
+  </div></div></section>
+</div>
+
+<!-- ═══ PAGE: ABOUT ═══ -->
+<div class="page" id="page-about">
+  <div class="inner-hero"><div class="inner-hero-inner"><div class="tag">About Us</div><h1>Built by Iskos,<br/>For Iskos</h1><p>IskoDash is a student-centered campus delivery platform built by Group 6, BSIT 4-5 at the Polytechnic University of the Philippines.</p></div></div>
+  <section class="sec" style="background:var(--cream)"><div class="sec-inner">
+    <div class="about-grid">
+      <div class="about-visual reveal"><div class="av-emoji">🎓</div></div>
+      <div class="about-text">
+        <div class="tag reveal">Our Story</div>
+        <h2 class="display-h reveal">A campus problem,<br/><span class="it">solved by students</span></h2>
+        <p class="reveal">Every day at PUP Sta. Mesa, thousands of students face the same struggle: long queues at the Lagoon, limited break time, and the impossibility of getting food between classes without being late.</p>
+        <p class="reveal">IskoDash was born from this frustration — a hyper-localized, peer-to-peer food delivery platform designed exclusively for the PUP campus environment.</p>
+        <div class="about-kpi reveal">
+          <div class="kpi-box"><div class="kn">5</div><div class="kl">Lagoon Vendor Partners</div></div>
+          <div class="kpi-box"><div class="kn">₱15</div><div class="kl">Flat Delivery Fee</div></div>
+          <div class="kpi-box"><div class="kn">782</div><div class="kl">Break-Even Deliveries</div></div>
+        </div>
+        <p class="reveal" style="font-size:.82rem;color:var(--muted);font-style:italic">"IskoDash isn't just an app. It's a PUP culture." — Group 6, BSIT 4-5</p>
+      </div>
+    </div>
+    <div style="margin-top:5rem">
+      <div class="tag reveal">The Team</div>
+      <h2 class="display-h reveal">Group 6 — <span class="it">BSIT 4-5</span></h2>
+      <p class="body-lg reveal">PUP Technopreneurship | COMP 027 | Dr. Iluminada Vivien R. Domingo</p>
+      <div class="team-grid">
+        <div class="team-card reveal"><div class="team-av">KD</div><h4>Kyle Ferell G. Del Rosario</h4><div class="role">CEO / Team Lead</div><div class="dept">Business Strategy & Stakeholder Management</div></div>
+        <div class="team-card reveal reveal-d1"><div class="team-av">ZV</div><h4>Zedrick Josef I. Vicente</h4><div class="role">Chief Operations Officer</div><div class="dept">Logistics, Fleet & Vendor Support</div></div>
+        <div class="team-card reveal reveal-d2"><div class="team-av">TP</div><h4>Tito Kian Dave B. Palma</h4><div class="role">Chief Technology Officer</div><div class="dept">App Development, Security & Scalability</div></div>
+        <div class="team-card reveal reveal-d3"><div class="team-av">JA</div><h4>Jiro Laurenz S. Agad</h4><div class="role">Chief Marketing Officer</div><div class="dept">Branding, Social Media & User Acquisition</div></div>
+      </div>
     </div>
   </div></section>
 </div>
 
+<!-- ═══ PAGE: CONTACT ═══ -->
+<div class="page" id="page-contact">
+  <div class="inner-hero"><div class="inner-hero-inner"><div class="tag">Get in Touch</div><h1>Let's Talk,<br/>Kapwa Isko</h1><p>Questions, vendor partnerships, or just want to learn more about IskoDash? Reach out — we're fellow PUP students too.</p></div></div>
+  <section class="sec" style="background:var(--cream)"><div class="sec-inner">
+    <div class="contact-grid">
+      <div class="contact-form-card reveal">
+        <div class="cf-title">Send us a message</div>
+        <div class="form-row"><div class="form-group"><label>First Name</label><input type="text" placeholder="Juan"/></div><div class="form-group"><label>Last Name</label><input type="text" placeholder="dela Cruz"/></div></div>
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="iskostudent@pup.edu.ph"/></div>
+        <div class="form-group"><label>I am a...</label><select><option>Student</option><option>Campus Vendor</option><option>Prospective Rider</option><option>Faculty/Staff</option></select></div>
+        <div class="form-group"><label>Message</label><textarea placeholder="Tell us what's on your mind..."></textarea></div>
+        <button onclick="showToast()" class="btn-blue" style="width:100%;justify-content:center">Send Message →</button>
+      </div>
+      <div class="contact-sidebar reveal reveal-d1">
+        <div class="ci-card"><div class="ci-ico">📧</div><div class="ci-txt"><h4>Email</h4><p>iskodash@pup.edu.ph</p></div></div>
+        <div class="ci-card"><div class="ci-ico">📘</div><div class="ci-txt"><h4>Facebook</h4><p>IskoDash PH</p></div></div>
+        <div class="ci-card"><div class="ci-ico">📸</div><div class="ci-txt"><h4>Instagram</h4><p>@iskodash.ph</p></div></div>
+        <div class="ci-card"><div class="ci-ico">🏫</div><div class="ci-txt"><h4>Campus</h4><p>Polytechnic University of the Philippines, Sta. Mesa, Manila</p></div></div>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ═══ PAGE: DOWNLOAD ═══ -->
+<div class="page" id="page-download">
+  <div class="inner-hero"><div class="inner-hero-inner"><div class="tag">Download IskoDash</div><h1>Experience the New<br/>Way to Lagoon!</h1><p>Available on iOS and Android. Free to download for all PUP students. Start ordering from Fewa's, Kape Kuripot, and more in seconds.</p></div></div>
+  <section class="sec" style="background:var(--cream)"><div class="sec-inner">
+    <div style="text-align:center;margin-bottom:3rem" class="reveal">
+      <div class="tag" style="justify-content:center">Get the App</div>
+      <h2 class="display-h" style="text-align:center">Download & Experience <span class="it">IskoDash</span></h2>
+    </div>
+    <div class="dl-grid">
+      <div class="dl-card reveal">
+        <span class="dl-ico">🍎</span>
+        <h3>iOS App Store</h3>
+        <p>For iPhone 8 or newer running iOS 14+. Requires 2GB storage and location services enabled for real-time delivery tracking.</p>
+        <div class="dl-qr-placeholder">📱</div>
+        <a class="btn-blue" style="width:100%;justify-content:center">Download on App Store</a>
+      </div>
+      <div class="dl-card reveal reveal-d1">
+        <span class="dl-ico">🤖</span>
+        <h3>Google Play Store</h3>
+        <p>For Android 10+ devices with minimum 3GB RAM. Requires 2GB storage, GPS, and internet connection for delivery coordination.</p>
+        <div class="dl-qr-placeholder">📱</div>
+        <a class="btn-blue" style="width:100%;justify-content:center">Get it on Google Play</a>
+      </div>
+    </div>
+
+    <!-- WHY ISKODASH on download page -->
+    <div style="margin-top:4rem">
+      <div class="tag reveal" style="justify-content:center;text-align:center">Why IskoDash?</div>
+      <div class="why-grid" style="margin-top:1.5rem">
+        <div class="why-item reveal"><div class="why-dot">🎓</div><div class="why-text">Built for PUP students</div></div>
+        <div class="why-item reveal reveal-d1"><div class="why-dot">🏪</div><div class="why-text">Support local lagoon vendors</div></div>
+        <div class="why-item reveal reveal-d2"><div class="why-dot">🛵</div><div class="why-text">No need to go down. We deliver up.</div></div>
+        <div class="why-item reveal"><div class="why-dot">🤖</div><div class="why-text">Smart meetups. AI powered.</div></div>
+        <div class="why-item reveal reveal-d1"><div class="why-dot">📍</div><div class="why-text">Real-time updates you can trust.</div></div>
+        <div class="why-item reveal reveal-d2"><div class="why-dot">💰</div><div class="why-text">Affordable, fast, and convenient.</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:3rem;text-align:center" class="reveal">
+      <p style="font-size:.85rem;color:var(--muted);max-width:500px;margin:0 auto">IskoDash is currently in development for PUP Sta. Mesa campus. By PUPians, For PUPians. 🎓</p>
+      <p style="font-size:.8rem;color:var(--muted2);margin-top:.5rem;font-style:italic">MABILIS. AFFORDABLE. AT PARA SA ATING PUP COMMUNITY. ❤️</p>
+    </div>
+  </div></section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" onclick="showPage('home')"><div class="logo-mark"><span>ID</span></div><span class="logo-text">Isko<em>Dash</em></span></a>
+        <p>By PUPians. For PUPians. Campus-exclusive food delivery platform for Polytechnic University of the Philippines, Sta. Mesa.</p>
+        <div style="margin-top:1.2rem;display:flex;gap:.5rem;flex-wrap:wrap">
+          <div style="font-size:.68rem;color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.06);border-radius:8px;padding:4px 10px">COMP 027: Technopreneurship</div>
+          <div style="font-size:.68rem;color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.06);border-radius:8px;padding:4px 10px">Group 6 | BSIT 4-5</div>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Platform</h5><ul><li><a onclick="showPage('services')">Services</a></li><li><a onclick="showPage('download')">Download App</a></li><li><a onclick="showPage('about')">About Us</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h5>For Community</h5><ul><li><a onclick="showPage('riders')">Become a Rider</a></li><li><a onclick="showPage('vendors')">Vendor Partners</a></li><li><a>Group Orders</a></li><li><a>Campus Feed</a></li></ul></div>
+      <div class="footer-col"><h5>Vendors</h5><ul><li><a>Fewa's Footlong</a></li><li><a>B1T1 Siomai Rice</a></li><li><a>Stall #10</a></li><li><a>Kape Kuripot</a></li><li><a>Waffle Time</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 IskoDash. Developed by Group 6 BSIT 4-5 | PUP Sta. Mesa | COMP 027 Technopreneurship</p>
+      <div class="footer-socials">
+  <a class="soc-btn" title="Facebook · IskoDash PH">f</a>
+  <a class="soc-btn" title="Instagram · @iskodash.ph">ig</a>
+  <a class="soc-btn" title="iskodash@pup.edu.ph">✉</a>
+</div>
+<div style="margin-top:.8rem;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center">
+  <span style="font-size:.72rem;color:rgba(255,255,255,0.40);display:flex;align-items:center;gap:.4rem">📘 IskoDash PH</span>
+  <span style="font-size:.72rem;color:rgba(255,255,255,0.40);display:flex;align-items:center;gap:.4rem">📸 @iskodash.ph</span>
+  <span style="font-size:.72rem;color:rgba(255,255,255,0.40);display:flex;align-items:center;gap:.4rem">✉ iskodash@pup.edu.ph</span>
+</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ PAGE: DASHBOARD ═══ -->
+<div class="page" id="page-dashboard">
+  <div style="padding-top:72px">
+    <div class="dashboard-layout">
+      <aside class="db-sidebar">
+        <div class="db-sidebar-logo">
+          <div class="logo-mark"><span>ID</span></div>
+          <span>Isko<em>Dash</em></span>
+        </div>
+        <a class="db-nav-item active"><span class="db-nav-icon">🏠</span> Dashboard</a>
+        <a class="db-nav-item"><span class="db-nav-icon">👥</span> Groups</a>
+        <a class="db-nav-item"><span class="db-nav-icon">📋</span> Orders</a>
+        <a class="db-nav-item"><span class="db-nav-icon">📍</span> Meetups</a>
+        <a class="db-nav-item"><span class="db-nav-icon">📊</span> Analytics</a>
+        <a class="db-nav-item"><span class="db-nav-icon">💬</span> Messages</a>
+        <a class="db-nav-item" style="margin-top:auto"><span class="db-nav-icon">⚙️</span> Settings</a>
+      </aside>
+      <main class="db-main">
+        <div class="db-topbar">
+          <div>
+            <h2>Welcome back, Isko Group! 👋</h2>
+            <p>Here's what's happening on campus today.</p>
+          </div>
+          <div class="db-notif-btn">🔔</div>
+        </div>
+        <div class="db-stats-row">
+          <div class="db-stat-card">
+            <div class="dsc-label">Active Group Orders</div>
+            <div class="dsc-value">12</div>
+            <div class="dsc-sub green">▲ +20% from yesterday</div>
+          </div>
+          <div class="db-stat-card">
+            <div class="dsc-label">Upcoming Meetups</div>
+            <div class="dsc-value">3</div>
+            <div class="dsc-sub">Today · 11:30 AM</div>
+          </div>
+          <div class="db-stat-card">
+            <div class="dsc-label">Total Members</div>
+            <div class="dsc-value">8</div>
+            <div class="dsc-sub green">All online</div>
+          </div>
+          <div class="db-stat-card">
+            <div class="dsc-label">Total Saved</div>
+            <div class="dsc-value">₱245</div>
+            <div class="dsc-sub">This month</div>
+          </div>
+        </div>
+        <div class="db-content-grid">
+          <div style="display:flex;flex-direction:column;gap:1.2rem">
+            <div class="db-card">
+              <div class="db-card-title">Upcoming Meetup <a>View All</a></div>
+              <div class="db-meetup-banner">
+                <div class="db-meetup-date">Today, 11:30 AM</div>
+                <div class="db-meetup-loc">📍 Near PUP Lagoon</div>
+                <div class="db-meetup-tags">
+                  <span class="db-meetup-tag">🌧️ Light Rain · 26°C</span>
+                  <span class="db-meetup-tag">✅ Most of you are free</span>
+                  <span class="db-meetup-tag">👥 Less crowd</span>
+                </div>
+                <div class="db-meetup-avatars">
+                  <div class="db-av">JR</div><div class="db-av">KF</div><div class="db-av">TD</div><div class="db-av">ZV</div><div class="db-av">+4</div>
+                  <span class="db-av-label">8 members going</span>
+                </div>
+                <button class="db-meetup-btn">View Details →</button>
+              </div>
+            </div>
+            <div class="db-card">
+              <div class="db-card-title">Group Chat</div>
+              <div class="db-chat-list">
+                <div class="db-chat-msg">
+                  <div class="db-chat-av">JR</div>
+                  <div class="db-chat-bubble"><div class="db-chat-name">Jiro</div><div class="db-chat-text">Saan tayo magkikita?</div></div>
+                  <div class="db-chat-time">11:02 AM</div>
+                </div>
+                <div class="db-chat-msg">
+                  <div class="db-chat-av">KF</div>
+                  <div class="db-chat-bubble"><div class="db-chat-name">Kyle</div><div class="db-chat-text">Sa bench malapit sa lagoon!</div></div>
+                  <div class="db-chat-time">11:05 AM</div>
+                </div>
+                <div class="db-chat-msg">
+                  <div class="db-chat-av">ZV</div>
+                  <div class="db-chat-bubble"><div class="db-chat-name">Zedrick</div><div class="db-chat-text">See you all! Order na ako 😄</div></div>
+                  <div class="db-chat-time">11:10 AM</div>
+                </div>
+              </div>
+              <div class="db-chat-input">
+                <input type="text" placeholder="Type a message…"/>
+                <button class="db-chat-send">➤</button>
+              </div>
+            </div>
+          </div>
+          <div class="db-card">
+            <div class="db-card-title">Recent Orders <a>View All Orders</a></div>
+            <div class="db-order-list">
+              <div class="db-order-item"><div class="db-order-emoji">🌭</div><div><div class="db-order-name">Fewa's Footlong</div><div class="db-order-sub">Jiro · 2 pcs</div></div><div class="db-order-time">9:41 AM</div><div class="db-order-price">₱178</div></div>
+              <div class="db-order-item"><div class="db-order-emoji">🍚</div><div><div class="db-order-name">B1T1 Siomai Rice</div><div class="db-order-sub">Kyle · 1 pc</div></div><div class="db-order-time">10:05 AM</div><div class="db-order-price">₱60</div></div>
+              <div class="db-order-item"><div class="db-order-emoji">☕</div><div><div class="db-order-name">Kape Kuripot</div><div class="db-order-sub">Tito · 2 pcs</div></div><div class="db-order-time">10:30 AM</div><div class="db-order-price">₱70</div></div>
+              <div class="db-order-item"><div class="db-order-emoji">🍽️</div><div><div class="db-order-name">Stall #10</div><div class="db-order-sub">Zedrick · 1 pc</div></div><div class="db-order-time">10:55 AM</div><div class="db-order-price">₱75</div></div>
+              <div class="db-order-item"><div class="db-order-emoji">🧇</div><div><div class="db-order-name">Waffle Time</div><div class="db-order-sub">Jiro · 2 pcs</div></div><div class="db-order-time">11:00 AM</div><div class="db-order-price">₱110</div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const navEl = document.getElementById('nav-'+name);
+  if(navEl) navEl.classList.add('active');
+  document.querySelectorAll('.mobile-menu a').forEach(a => a.classList.remove('active'));
+  const mEl = document.getElementById('mnav-'+name);
+  if(mEl) mEl.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(initReveal,100);
+}
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
+function showToast(){
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+document.addEventListener('click', e => {
+  if(e.target.classList.contains('like-btn')){
+    const btn=e.target;
+    const count=parseInt(btn.dataset.count);
+    if(btn.classList.contains('liked')){
+      btn.dataset.count=count-1;
+      btn.textContent='❤️ '+(count-1);
+      btn.classList.remove('liked');
+    } else {
+      btn.dataset.count=count+1;
+      btn.textContent='❤️ '+(count+1);
+      btn.classList.add('liked');
+    }
+  }
+});
+function initReveal(){
+  const els=document.querySelectorAll('.reveal:not(.visible)');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+    });
+  },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>obs.observe(el));
+}
+initReveal();
+window.addEventListener('scroll',initReveal);
+</script>
+</body>
+</html>
+HTMLEOF
+echo "File created, size: $(wc -c < /home/claude/iskodash_fixed.html) bytes, lines: $(wc -l < /home/claude/iskodash_fixed.html)"
+Output
+
+Command argument is 113_631 bytes, exceeding the 100_000-byte per-argument limit. For large content, pipe via stdin or use a file-write API instead of embedding the content inline in the command. Argument preview: 'cat > /home/claude/iskodash_fixed.html << \'HTMLEOF\'\n<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8"/>\n<meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n<title>IskoD'
+Done
+
+You are out of free m
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -1154,6 +3136,9 @@ footer{background:linear-gradient(160deg,#7A1518,#A81E23,#5c0c10);padding:clamp(
     </div>
   </div>
 </footer>
+
+
+
 
 <script>
 const cursor = document.getElementById('cursor');
