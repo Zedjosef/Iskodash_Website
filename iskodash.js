@@ -1,17 +1,21 @@
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
 });
+
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('page-' + name).classList.add('active');
+
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-  const navEl = document.getElementById('nav-'+name);
-  if(navEl) navEl.classList.add('active');
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+
   document.querySelectorAll('.mobile-menu a').forEach(a => a.classList.remove('active'));
-  const mEl = document.getElementById('mnav-'+name);
-  if(mEl) mEl.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  setTimeout(initReveal,100);
+  const mEl = document.getElementById('mnav-' + name);
+  if (mEl) mEl.classList.add('active');
+
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(initReveal, 100);
 }
 document.getElementById('hamburger').addEventListener('click', () => {
   document.getElementById('mobileMenu').classList.toggle('open');
@@ -58,17 +62,24 @@ document.addEventListener('mousemove', e => {
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
 });
+
 function showPage(name) {
+  // Hide all pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('page-' + name).classList.add('active');
+
+  // Desktop nav — remove active from all, then set on current
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-  const navEl = document.getElementById('nav-'+name);
-  if(navEl) navEl.classList.add('active');
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+
+  // Mobile nav — remove active from all, then set on current
   document.querySelectorAll('.mobile-menu a').forEach(a => a.classList.remove('active'));
-  const mEl = document.getElementById('mnav-'+name);
-  if(mEl) mEl.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  setTimeout(initReveal,100);
+  const mEl = document.getElementById('mnav-' + name);
+  if (mEl) mEl.classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(initReveal, 100);
 }
 document.getElementById('hamburger').addEventListener('click', () => {
   document.getElementById('mobileMenu').classList.toggle('open');
