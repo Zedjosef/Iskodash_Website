@@ -104,4 +104,3 @@ function initReveal(){
   els.forEach(el=>obs.observe(el));
 }
 initReveal();
-window.addEventListener('scroll',initReveal);
