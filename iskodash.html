@@ -18,7 +18,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <a class="nav-logo" onclick="showPage('home')">
-    <img src="iskodash_logo.png" alt="IskoDash" class="nav-logo-img" style="height:40px;width:auto;object-fit:contain"/>
+    <img src="iskodash_logo.png" alt="IskoDash" class="nav-logo-img" style="height:80px;width:auto;object-fit:contain"/>
   </a>
   <ul class="nav-links">
     <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
@@ -432,7 +432,16 @@
   <div class="inner-hero"><div class="inner-hero-inner"><div class="tag">About Us</div><h1>Built by Iskos,<br/>For Iskos</h1><p>IskoDash is a student-centered campus delivery platform built by Group 6, BSIT 4-5 at the Polytechnic University of the Philippines.</p></div></div>
   <section class="sec" style="background:var(--cream)"><div class="sec-inner">
     <div class="about-grid">
-      <div class="about-visual reveal" style="background:#fff1f1;display:flex;align-items:center;justify-content:center;padding:2rem"><img src="iskodash_logo.png" alt="IskoDash Logo" style="width:80%;max-width:320px;height:auto;object-fit:contain;position:relative;z-index:1"/></div>      
+<div class="about-visual reveal" style="
+  background: url('lagoon.png') center/cover no-repeat;
+  position: relative;
+  overflow: hidden;
+">
+  <div style="
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.15);
+  "></div>
+</div>
       <div class="about-text">
         <div class="tag reveal">Our Story</div>
         <h2 class="display-h reveal">A campus problem,<br/><span class="it">solved by students</span></h2>
@@ -520,7 +529,9 @@
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="nav-logo" onclick="showPage('home')"><img src="iskodash_logo.png" alt="IskoDash" style="height:36px;width:auto;object-fit:contain;filter:brightness(0) invert(1)"/></a>        <p>By PUPians. For PUPians. Campus-exclusive food delivery platform for Polytechnic University of the Philippines, Sta. Mesa.</p>
+<a class="nav-logo" onclick="showPage('home')">
+  <img src="iskodash_logo_white.png" alt="IskoDash" style="height:100px;width:auto;object-fit:contain"/>
+</a>
         <div style="margin-top:1.2rem;display:flex;gap:.5rem;flex-wrap:wrap">
           <div style="font-size:.68rem;color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.06);border-radius:8px;padding:4px 10px">COMP 027: Technopreneurship</div>
           <div style="font-size:.68rem;color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.06);border-radius:8px;padding:4px 10px">Group 6 | BSIT 4-5</div>

@@ -472,7 +472,12 @@ nav.scrolled .nav-links a::after{background:var(--r2)}
     radial-gradient(ellipse 35% 35% at 55% 25%, rgba(255,200,200,0.15) 0%, transparent 60%),
     linear-gradient(160deg,#4a0a0c 0%,#7A1518 45%,#3d0608 100%)}
     .hero-bg{position:absolute;inset:0;z-index:0;background:url('pup_lagoon.png') center/cover no-repeat}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right, rgba(60,5,8,0.82) 0%, rgba(40,5,8,0.60) 55%, rgba(0,0,0,0.15) 100%)}
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(40,5,8,0.75) 0%, rgba(40,5,8,0.55) 50%, rgba(0,0,0,0.10) 100%);
+}
 .hero-grain{position:absolute;inset:0;z-index:1;opacity:.03;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px}
 
@@ -488,6 +493,16 @@ nav.scrolled .nav-links a::after{background:var(--r2)}
 .hero-tagline{font-family:'Unbounded',sans-serif;font-size:.72rem;font-weight:700;color:var(--sky);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem;animation:fadeUp .62s .03s ease both}
 .hero-h1{font-family:'Unbounded',sans-serif;font-size:clamp(2.1rem,4.4vw,3.7rem);font-weight:800;line-height:1.06;color:#fff;margin-bottom:1.5rem;letter-spacing:-1.5px;animation:fadeUp .7s .08s ease both}
 .hero-h1 .accent{background:linear-gradient(90deg,var(--sky),#93C5FD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block}
+.hero-h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.6rem, 3.5vw, 3.7rem);
+  font-weight: 800;
+  line-height: 1.06;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  letter-spacing: -1.5px;
+  animation: fadeUp .7s .08s ease both;
+}
 .hero-h1 .stroke-text{-webkit-text-stroke:1.5px rgba(255,255,255,0.28);color:transparent}
 .hero-sub{font-size:.98rem;line-height:1.85;color:rgba(255,255,255,0.85);max-width:420px;margin-bottom:2.5rem;animation:fadeUp .7s .16s ease both;font-weight:300}
 .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;animation:fadeUp .7s .24s ease both}
@@ -532,6 +547,13 @@ nav.scrolled .nav-links a::after{background:var(--r2)}
 .ps-deliver-text{font-family:'Unbounded',sans-serif;font-size:.58rem;font-weight:800;color:#fff;line-height:1.3}
 .ps-deliver-text span{font-size:.5rem;font-weight:400;color:rgba(255,255,255,0.82);display:block}
 .ps-deliver-emoji{font-size:1.4rem}
+
+@media(max-width:768px) {
+  .hero-visual { display: flex; }
+  .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .phone-stage { transform: scale(0.75); transform-origin: top center; }
+}
+
 
 .ps-body{background:#F5F8FF;flex:1;padding:10px 10px 0;overflow:hidden;display:flex;flex-direction:column;gap:8px}
 .ps-section-label{font-family:'Unbounded',sans-serif;font-size:.48rem;font-weight:800;color:var(--b2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
@@ -722,7 +744,21 @@ nav.scrolled .nav-links a::after{background:var(--r2)}
 .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin-top:3rem}
 .team-card{background:#FFFAFA;border-radius:var(--radius);padding:2rem 1.5rem;text-align:center;border:1.5px solid rgba(255,90,95,0.14);transition:all .3s;box-shadow:0 3px 14px rgba(255,90,95,0.07)}
 .team-card:hover{border-color:rgba(255,90,95,0.38);box-shadow:0 10px 32px rgba(255,90,95,0.13);transform:translateY(-6px)}
-.team-av{width:72px;height:72px;border-radius:50%;background:var(--grad-blue);display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:800;color:#fff;margin:0 auto 1.2rem;box-shadow:0 8px 24px var(--b-glow)}
+.team-av {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--grad-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 auto 1.2rem;
+  box-shadow: 0 8px 24px var(--b-glow);
+}
 .team-card h4{font-family:'Unbounded',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:-.3px;margin-bottom:.35rem;color:var(--ink)}
 .team-card .role{font-size:.78rem;color:var(--r2);font-weight:600;margin-bottom:.25rem}
 .team-card .dept{font-size:.72rem;color:var(--muted2);font-weight:300}
@@ -1014,13 +1050,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:va
 a,button,.vendor-card,.svc-card,.aud-card,.feed-act,.store-badge,.ps-vendor-card,.nav-cta,.btn-red,.btn-blue,.btn-outline,.btn-white,.btn-w-solid,.btn-hero-primary,.btn-hero-ghost,.hamburger,.soc-btn,.footer-col a,.mobile-menu a,.ps-tab,.track-back,.track-msg-btn,.ps-notif-btn{cursor:pointer}
 
 
-/* Default: white logo on dark/red hero background */
-.nav-logo-img {
-  filter: brightness(0) invert(1);
-  transition: filter .4s ease;
-}
+.nav-logo-img { content: url('iskodash_logo_white.png'); }
+nav.scrolled .nav-logo-img { content: url('iskodash_logo.png'); }
 
-/* Scrolled: original colors on white background */
 nav.scrolled .nav-logo-img {
   filter: none;
 }
