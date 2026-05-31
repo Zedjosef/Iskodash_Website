@@ -429,7 +429,34 @@
 
 <!-- ═══ PAGE: ABOUT ═══ -->
 <div class="page" id="page-about">
-  <div class="inner-hero"><div class="inner-hero-inner"><div class="tag">About Us</div><h1>Built by Iskos,<br/>For Iskos</h1><p>IskoDash is a student-centered campus delivery platform built by Group 6, BSIT 4-5 at the Polytechnic University of the Philippines.</p></div></div>
+ <div class="inner-hero" style="
+  background-image: url('team.png');
+  background-size: 100%;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  position: relative;
+  min-height: 700px;
+  display: flex;
+  align-items: flex-end;
+  padding: 130px clamp(1.5rem,5vw,4rem) 3rem;
+">
+  <div style="
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(80,8,12,0.05) 0%,
+      rgba(80,8,12,0.10) 50%,
+      rgba(80,8,12,0.75) 80%,
+      rgba(80,8,12,0.90) 100%
+    );
+  "></div>
+  <div style="position:relative;z-index:2;max-width:1280px;width:100%;margin:0 auto">
+    <div class="tag" style="color:var(--sky)">About Us</div>
+    <h1 style="font-family:'Unbounded',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:800;color:#fff;letter-spacing:-2px;line-height:1.05;margin-bottom:1rem;max-width:600px">Built by Iskos,<br/>For Iskos</h1>
+    <p style="font-size:1rem;color:rgba(255,255,255,0.70);max-width:480px;line-height:1.8;font-weight:300">IskoDash is a student-centered campus delivery platform built by Group 6, BSIT 4-5 at the Polytechnic University of the Philippines.</p>
+  </div>
+</div>
   <section class="sec" style="background:var(--cream)"><div class="sec-inner">
     <div class="about-grid">
 <div class="about-visual reveal" style="
